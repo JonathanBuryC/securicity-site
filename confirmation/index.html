@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Securicity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap">
+<style>
+  /* Reprend l'écran de l'app : la carte du quartier, un repère posé, et un panneau qui remonte du bas. */
+  :root {
+    --sol: #ECEFF3; --rue: #FFFFFF; --eau: #C6D9EA; --parc: #D7E6D2;
+    --panneau: #FFFFFF; --texte: #14233B; --discret: #5F6E84; --bleu: #1B3FA8; --repere: #E0452F;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --sol: #13233A; --rue: #21354F; --eau: #0A1422; --parc: #143029;
+      --panneau: #18283D; --texte: #E9EFF7; --discret: #8FA3BC; --bleu: #7DBEFF;
+    }
+  }
+  html, body { height: 100%; margin: 0; }
+  body { background: var(--sol); color: var(--texte); font: 17px/1.5 "Archivo", system-ui, sans-serif; overflow: hidden; }
+  svg.carte { position: fixed; inset: 0; width: 100%; height: 100%; }
+  .repere { position: fixed; left: 50%; top: 34%; width: 34px; height: 34px; margin: -40px 0 0 -17px;
+            background: var(--repere); border: 3px solid var(--panneau);
+            border-radius: 50% 50% 50% 0; transform: rotate(-45deg); animation: pose .5s cubic-bezier(.3, 1.6, .5, 1) both; }
+  @keyframes pose { from { transform: translateY(-40px) rotate(-45deg); opacity: 0; } }
+  .panneau { position: fixed; left: 0; right: 0; bottom: 0; background: var(--panneau);
+             border-radius: 22px 22px 0 0; padding: 14px 28px calc(36px + env(safe-area-inset-bottom));
+             box-shadow: 0 -2px 16px rgba(0, 0, 0, .08); }
+  .poignee { width: 36px; height: 4px; border-radius: 4px; background: var(--discret); opacity: .35; margin: 0 auto 22px; }
+  .contenu { max-width: 440px; margin: 0 auto; }
+  .marque { font-weight: 800; color: var(--bleu); letter-spacing: -.01em; }
+  h1 { font-size: 30px; line-height: 1.1; font-weight: 800; letter-spacing: -.02em; margin: 10px 0 10px; }
+  p { margin: 0 0 6px; }
+  .discret { color: var(--discret); font-size: 15px; margin-top: 14px; }
+  @media (prefers-reduced-motion: reduce) { .repere { animation: none; } }
+  [hidden] { display: none; }
+</style>
+</head>
+<body>
+<svg class="carte" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <rect width="400" height="800" fill="var(--sol)"/>
+  <path d="M-20 560C100 520 190 640 420 590L420 660C230 700 110 590-20 640Z" fill="var(--eau)"/>
+  <rect x="240" y="170" width="110" height="140" rx="8" fill="var(--parc)"/>
+  <g stroke="var(--rue)" fill="none" stroke-linecap="round">
+    <path stroke-width="14" d="M-20 130L420 90M110-20L170 820M-20 390L420 450"/>
+    <path stroke-width="7" d="M-20 250L420 220M270-20L320 820M-20 40L190-20M30-20L60 820M-20 500L420 340M210 90L225 450M-20 720L420 750"/>
+  </g>
+</svg>
+<div class="repere" aria-hidden="true"></div>
+
+<div class="panneau">
+  <div class="poignee"></div>
+  <div class="contenu">
+    <div class="marque">Securicity</div>
+
+    <section id="ok">
+      <h1>C'est confirmé.</h1>
+      <p>Votre compte est actif. Retournez dans l'application : vous y êtes déjà connecté.</p>
+      <p class="discret">Vous pouvez fermer cette page.</p>
+    </section>
+
+    <section id="erreur" hidden>
+      <h1>Ce lien ne marche plus.</h1>
+      <p>Il a expiré ou a déjà servi. Ouvrez l'application et connectez-vous avec votre e-mail.</p>
+      <p class="discret">Si votre compte n'est pas encore confirmé, l'application vous le dira.</p>
+    </section>
+  </div>
+</div>
+<script>
+  // Supabase renvoie ici après la confirmation ; en cas de problème, l'erreur est dans l'adresse.
+  if ((location.hash + location.search).indexOf('error') !== -1) {
+    document.getElementById('ok').hidden = true;
+    document.getElementById('erreur').hidden = false;
+  }
+  // Retire les éventuels jetons de connexion de la barre d'adresse.
+  history.replaceState(null, '', location.pathname);
+</script>
+</body>
+</html>

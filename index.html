@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Securicity, votre quartier vous prévient</title>
+<meta name="description" content="Les voisins signalent les incivilités sur une carte. Vous êtes prévenu dès que ça arrive près de chez vous, et chaque signalement est transmis à la police.">
+<meta property="og:title" content="Securicity, votre quartier vous prévient">
+<meta property="og:description" content="La carte des incivilités de votre quartier, signalées par vos voisins.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 48 48%27%3E%3Cpath d=%27M24 3C15.2 3 8 10.2 8 19c0 12.5 16 26 16 26s16-13.5 16-26C40 10.2 32.8 3 24 3z%27 fill=%27%23E0452F%27/%3E%3Ccircle cx=%2724%27 cy=%2719%27 r=%276.5%27 fill=%27%23fff%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<style>
+/* Layout : la structure « La notification » (maquette 1) posée sur la carte du quartier (maquette 3).
+   Accueil : carte plein cadre avec cercle et repères ; notifications, titre et formulaire à gauche ; téléphone à droite. */
+:root{
+  --bleu:#1B3FA8; --ciel:#7DBEFF; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --rouge-btn:#C23824;
+  --fond:#F6F7F9; --blanc:#FFFFFF; --filet:#D5DBE4;
+  --app-fond:#F6F7F9; --app-surface:#FFFFFF; --app-texte:#14233B; --app-discret:#4A586D; --app-bordure:#D5DBE4;
+  --sol:#ECEFF3; --rue:#FFFFFF; --eau:#C6D9EA; --parc:#D7E6D2;
+}
+*{box-sizing:border-box}
+body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Archivo",system-ui,sans-serif;margin:0}
+::selection{background:var(--rouge);color:#fff}
+:focus-visible{outline:2px solid var(--bleu);outline-offset:3px;border-radius:4px}
+.tab{font-variant-numeric:tabular-nums}
+
+/* ---------- Téléphone ---------- */
+.tel{display:flex;flex-direction:column;align-items:center;gap:16px}
+.coque{width:272px;height:560px;border-radius:44px;padding:9px;background:#070D17;border:0;cursor:pointer;display:block;box-shadow:0 2px 4px rgba(7,13,23,.3),0 34px 70px -24px rgba(7,13,23,.55)}
+.vitre{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--app-fond)}
+.piste{display:flex;height:100%;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.ecran{flex:none;width:100%;height:100%;position:relative;font:500 11px/1.35 "Archivo",sans-serif;color:var(--app-texte);text-align:left}
+/* Indicateurs : un point par écran ; l'écran affiché s'étire en tiret, sans effet de chargement. */
+.points{display:flex;align-items:center}
+/* Le bouton est une zone de toucher invisible ; le point dessiné est le span à l'intérieur. */
+.points button{height:28px;padding:0 4px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
+.points button span{display:block;width:9px;height:9px;border-radius:99px;background:rgba(20,35,59,.28);transition:width .5s cubic-bezier(.16,1,.3,1),background-color .5s}
+.points button[aria-current="true"] span{width:32px;background:var(--encre)}
+.points button:hover span{background:rgba(20,35,59,.5)}
+.points button[aria-current="true"]:hover span{background:var(--encre)}
+@media (prefers-reduced-motion:reduce){.piste,.points button span{transition:none}}
+
+/* Écrans de l'app */
+.carte{position:absolute;inset:0;width:100%;height:100%}
+.haut{position:absolute;top:34px;left:12px;right:12px}
+.champ{background:var(--app-surface);border-radius:9px;padding:9px 12px;color:var(--app-discret);box-shadow:0 1px 3px rgba(20,35,59,.18)}
+.bulle{background:var(--app-surface);border-radius:9px;padding:8px 10px;box-shadow:0 1px 3px rgba(20,35,59,.18);text-align:center}
+.rayon{position:absolute;left:50%;top:47%;width:150px;height:150px;transform:translate(-50%,-50%);border-radius:50%;border:1.5px solid var(--bleu);background:rgba(27,63,168,.1)}
+.maison{position:absolute;left:50%;top:47%;width:24px;height:24px;transform:translate(-50%,-50%);border-radius:50%;background:#fff;border:2px solid var(--bleu);display:grid;place-items:center;color:var(--bleu)}
+.maison svg{width:13px;height:13px}
+.pin{position:absolute;width:17px;height:17px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:2px solid #fff}
+.pin.gros{width:30px;height:30px;border:3px solid #000;box-shadow:0 4px 10px rgba(0,0,0,.25)}
+.pq{position:absolute;margin:-10px 0 0 13px;background:var(--app-texte);color:#fff;font-weight:700;font-size:9px;line-height:13px;border-radius:99px;padding:0 4px;border:1.5px solid #fff}
+.ombre{position:absolute;width:14px;height:5px;border-radius:50%;background:#000;opacity:.25}
+.bas{position:absolute;left:10px;right:10px;bottom:12px;display:flex;flex-direction:column;gap:8px}
+.carton{background:var(--app-surface);border-radius:10px;padding:10px 12px;box-shadow:0 1px 3px rgba(20,35,59,.18);display:flex;flex-direction:column;gap:3px}
+.carton b{font-size:12.5px}
+.carton small,.alerte small{color:var(--app-discret);font-size:10px}
+.bouton{background:var(--bleu);color:#fff;border-radius:10px;padding:11px;text-align:center;font-weight:700;font-size:12px}
+.onglets{display:flex;justify-content:space-between;align-items:center;background:var(--app-surface);border-radius:18px;padding:6px 12px;font-size:9.5px;color:var(--app-discret);box-shadow:0 1px 3px rgba(20,35,59,.18)}
+.onglets .on{color:var(--bleu);font-weight:700}
+.onglets .plus{width:36px;height:36px;border-radius:50%;background:var(--bleu);color:#fff;font-size:21px;line-height:34px;text-align:center}
+.page{position:absolute;inset:0;padding:40px 12px 12px;display:flex;flex-direction:column;gap:8px}
+.page h4{margin:0 0 2px;font-size:19px;font-weight:800}
+.photo{height:118px;border-radius:10px;position:relative;overflow:hidden;background:linear-gradient(160deg,#9BA7B8,#5D6B80 60%,#3E4A5C)}
+.photo::before{content:"";position:absolute;left:22%;bottom:0;width:58px;height:70px;border-radius:30px 30px 0 0;background:#2B3444}
+.photo::after{content:"";position:absolute;left:calc(22% + 14px);bottom:58px;width:30px;height:34px;border-radius:50%;background:#8C97A8;filter:blur(5px)}
+.titre{display:flex;align-items:center;gap:8px}
+.icone{width:30px;height:30px;border-radius:9px;background:rgba(224,69,47,.12);color:var(--rouge);display:grid;place-items:center;flex:none}
+.icone svg{width:16px;height:16px}
+.question{background:var(--app-fond);border-radius:9px;padding:7px 9px;display:flex;flex-direction:column;gap:2px}
+.msg{background:var(--app-fond);border-radius:12px;padding:6px 9px;max-width:86%;align-self:flex-start;display:flex;flex-direction:column}
+.msg.moi{align-self:flex-end;background:var(--bleu);color:#fff}
+.msg small{font-size:9.5px;opacity:.85}
+.notif-mini{background:rgba(255,255,255,.95);border-radius:14px;padding:9px 11px;box-shadow:0 6px 16px rgba(20,35,59,.18);display:flex;flex-direction:column;gap:2px}
+.liste{background:var(--app-surface);border-radius:10px;padding:2px 10px;box-shadow:0 1px 3px rgba(20,35,59,.12)}
+.alerte{display:flex;gap:9px;align-items:center;padding:8px 0;border-top:1px solid var(--app-bordure)}
+.alerte:first-child{border-top:0}
+.alerte div{flex:1;min-width:0;display:flex;flex-direction:column}
+.alerte .lu{width:7px;height:7px;border-radius:50%;background:var(--rouge)}
+
+/* ---------- Page ---------- */
+.marque{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.01em;font-variation-settings:"wdth" 108}
+.marque i{width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge)}
+
+.accueil{position:relative;overflow:hidden;background:var(--sol)}
+.accueil .fond{position:absolute;inset:0;width:100%;height:100%}
+/* Voile clair à gauche : la carte reste visible, le texte reste lisible. */
+.accueil::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(246,247,249,.97) 0%,rgba(246,247,249,.92) 38%,rgba(246,247,249,.35) 62%,rgba(246,247,249,0) 78%)}
+.zone{position:absolute;z-index:1;left:66%;top:52%;width:min(52vw,640px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--bleu);background:rgba(27,63,168,.07)}
+.zone span{position:absolute;left:9%;top:12%;background:var(--bleu);color:#fff;font-weight:700;font-size:.85rem;padding:3px 10px;border-radius:99px}
+.chez{position:absolute;z-index:2;left:66%;top:52%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:3px solid var(--bleu);display:grid;place-items:center;color:var(--bleu)}
+.chez svg{width:22px;height:22px}
+.repere{position:absolute;z-index:2;border:0;padding:0;background:none;cursor:pointer;width:44px;height:52px;display:grid;place-items:end center}
+.repere i{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s}
+.repere:hover i,.repere.actif i{transform:rotate(-45deg) scale(1.2);border-color:#000}
+.repere b{position:absolute;bottom:54px;white-space:nowrap;background:#fff;border-radius:8px;padding:3px 9px;font-size:.8rem;box-shadow:0 1px 3px rgba(20,35,59,.2);opacity:0;transition:opacity .3s}
+.repere:hover b,.repere.actif b,.repere:focus-visible b{opacity:1}
+/* Les quatre repères, un par écran, posés sur la carte à droite du téléphone. */
+.reperes{position:absolute;top:0;right:0;width:150px;height:560px}
+
+.entete{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.entete a{color:var(--encre);text-decoration:underline;text-underline-offset:4px;font-weight:600}
+.scene{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:12px 24px 80px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px 64px;align-items:start}
+/* Colonne du téléphone : collante d'un bloc, avec sa légende, jusqu'à la fin de l'accueil. */
+.colonne-tel{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding-right:150px}
+.legende{max-width:300px;text-align:center;min-height:76px;background:rgba(255,255,255,.92);border-radius:14px;padding:10px 14px;box-shadow:0 1px 3px rgba(20,35,59,.15)}
+.legende b{display:block;font-size:1rem}
+.legende span{color:var(--texte2);font-size:.92rem}
+
+.pile{position:relative;height:300px;margin:8px 0 40px;max-width:620px}
+.notif{position:absolute;width:min(100%,560px);background:rgba(255,255,255,.97);color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.12),0 26px 50px -22px rgba(20,35,59,.45)}
+.notif .ico{grid-row:span 2;width:44px;height:44px;border-radius:12px;background:var(--bleu);display:grid;place-items:center}
+.notif .ico i{width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff}
+.notif b{font-size:clamp(1.05rem,2.3vw,1.45rem);line-height:1.2;letter-spacing:-.01em}
+.notif span{color:var(--texte2);font-size:.95rem}
+.notif small{grid-row:1;grid-column:3;color:var(--texte2);font-size:.85rem;align-self:start}
+.notif:nth-child(1){top:0;left:0;z-index:3}
+.notif:nth-child(2){top:96px;left:34px;z-index:2;transform:scale(.97)}
+.notif:nth-child(3){top:184px;left:68px;z-index:1;transform:scale(.94)}
+h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;font-weight:900;font-variation-settings:"wdth" 112;margin:0 0 18px;text-wrap:balance;max-width:12ch}
+.chapeau{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:0 0 30px}
+
+.prevenir{display:flex;flex-wrap:wrap;gap:8px;max-width:460px}
+.prevenir label{flex-basis:100%;font-weight:600;font-size:.95rem}
+.prevenir input{flex:1 1 220px;min-width:0;font:inherit;padding:13px 16px;border-radius:12px;border:1.5px solid #9AA6B8;background:#fff;color:var(--encre)}
+.prevenir input::placeholder{color:#5F6C80}
+.prevenir button{font:700 1rem "Archivo",sans-serif;padding:13px 20px;border-radius:12px;border:0;background:var(--rouge-btn);color:#fff;cursor:pointer}
+.prevenir button:hover{background:#A52F1E}
+.prevenir output{flex-basis:100%;font-size:.92rem;min-height:1.4em}
+.prevenir .mention{flex-basis:100%;color:var(--texte2);font-size:.85rem}
+
+.etapes{background:var(--blanc);border-top:1px solid var(--filet)}
+.etapes .in{max-width:1180px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
+.etapes h2,.vie h2{font-size:clamp(1.8rem,3.4vw,2.6rem);letter-spacing:-.02em;margin:0;font-weight:800;text-wrap:balance}
+.etapes h2{grid-column:1/-1}
+.etape .num{font-size:clamp(4rem,9vw,7rem);line-height:.8;font-weight:900;color:var(--bleu);font-variation-settings:"wdth" 70}
+.etape p{margin:14px 0 0;color:var(--texte2);max-width:28ch}
+.etape b{color:var(--encre)}
+.vie{max-width:1180px;margin:0 auto;padding:80px 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px}
+.vie dl{margin:0;display:grid;gap:26px}
+.vie dt{font-weight:700;font-size:1.1rem}
+.vie dd{margin:4px 0 0;color:var(--texte2);max-width:56ch}
+.pied{max-width:1180px;margin:0 auto;padding:28px 24px 40px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:.9rem;color:var(--texte2);border-top:1px solid var(--filet)}
+.pied a{color:inherit;text-underline-offset:3px}
+
+@media (max-width:960px){
+  .scene{grid-template-columns:1fr}
+  .colonne-tel{padding-right:0}
+  .reperes{display:none}
+  .accueil::before{background:linear-gradient(180deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.9) 55%,rgba(246,247,249,.55) 100%)}
+  .zone{left:50%;top:78%;width:90vw}
+  .chez{left:50%;top:78%}
+  .etapes .in,.vie{grid-template-columns:1fr}
+  .pile{height:270px}
+}
+@media (max-width:420px){.coque{width:248px;height:510px}.notif:nth-child(2){left:16px}.notif:nth-child(3){left:32px}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="plan">
+  <rect width="260" height="560" fill="var(--sol)"/>
+  <path d="M-10 400C70 370 130 450 270 420L270 470C150 500 80 420-10 450Z" fill="var(--eau)"/>
+  <rect x="155" y="130" width="72" height="96" rx="6" fill="var(--parc)"/>
+  <g stroke="var(--rue)" fill="none" stroke-linecap="round">
+    <path stroke-width="10" d="M-10 95L270 63M72-10L114 570M-10 275L270 318"/>
+    <path stroke-width="5" d="M-10 180L270 160M176-10L208 570M-10 33L125-10M20-10L42 570M-10 360L270 245M135 63L146 318M-10 510L270 530"/>
+  </g>
+</g>
+<g id="quartier">
+  <rect width="1600" height="900" fill="var(--sol)"/>
+  <path d="M-20 700C300 640 520 790 900 720S1400 650 1620 700L1620 790C1300 760 1050 850 760 820S260 760-20 800Z" fill="var(--eau)"/>
+  <rect x="980" y="160" width="230" height="200" rx="14" fill="var(--parc)"/>
+  <rect x="210" y="520" width="150" height="110" rx="12" fill="var(--parc)"/>
+  <g stroke="var(--rue)" fill="none" stroke-linecap="round">
+    <path stroke-width="26" d="M-20 250L1620 180M430-20L560 920M-20 560L1620 640M1150-20L1260 920"/>
+    <path stroke-width="12" d="M-20 410L1620 380M820-20L870 920M240-20L280 920M-20 120L700-20M1360-20L1460 920M600 250L640 640M-20 860L1620 880M960 380L1500 330"/>
+  </g>
+</g>
+</defs></svg>
+
+<section class="accueil">
+  <svg class="fond" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#quartier"/></svg>
+  <div class="zone" aria-hidden="true"><span>500 m</span></div>
+  <div class="chez" aria-hidden="true"><i data-lucide="map-pin-house"></i></div>
+
+  <div class="entete"><div class="marque"><i></i>Securicity</div><a href="#pied">Presse</a></div>
+  <div class="scene">
+    <div>
+      <div class="pile" aria-label="Exemples de notifications">
+        <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 250 m de chez vous</b><small class="tab">21:42</small><span>Place Pigalle. Touchez pour voir le signalement.</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Un voisin demande : avez-vous vu quelque chose ?</b><small class="tab">20:15</small><span>Cambriolage rue des Martyrs, vers 14 h.</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Tag à 90 m de vous</b><small class="tab">18:03</small><span>Rue Lepic.</span></div>
+      </div>
+      <h1>Votre quartier vous prévient.</h1>
+      <p class="chapeau">Les voisins signalent ce qu'ils voient sur une carte. Vous êtes averti dès que ça arrive près de chez vous, et chaque signalement est transmis à la police par e-mail.</p>
+      <form class="prevenir" name="sortie" method="POST" data-netlify="true" netlify-honeypot="piege" data-form>
+        <input type="hidden" name="form-name" value="sortie">
+        <p hidden><label>Ne pas remplir <input name="piege"></label></p>
+        <label for="mail">L'app arrive bientôt sur iPhone et Android.</label>
+        <input id="mail" name="email" type="email" required placeholder="votre@email.fr" autocomplete="email">
+        <button type="submit">Me prévenir à la sortie</button>
+        <output></output>
+        <small class="mention">Votre e-mail sert uniquement à vous prévenir de la sortie de l’app.</small>
+      </form>
+    </div>
+    <div class="colonne-tel">
+      <div data-tel></div>
+      <div class="legende" data-legende aria-live="polite"></div>
+      <div class="reperes" data-reperes></div>
+    </div>
+  </div>
+</section>
+
+<section class="etapes"><div class="in">
+  <h2>Signaler prend trois gestes.</h2>
+  <div class="etape"><div class="num">1</div><p><b>Placez le repère.</b> Maintenez-le, faites-le glisser là où ça s'est passé.</p></div>
+  <div class="etape"><div class="num">2</div><p><b>Dites ce qui s'est passé.</b> Le type, quelques mots, une photo si vous voulez.</p></div>
+  <div class="etape"><div class="num">3</div><p><b>Publiez.</b> Le quartier est prévenu, la police reçoit le signalement.</p></div>
+</div></section>
+
+<section class="vie">
+  <h2>Ce que les groupes de quartier ne font pas.</h2>
+  <dl>
+    <div><dt>Une carte, pas un fil de messages</dt><dd>Vous voyez où ça se passe, avec un rayon autour de chez vous, au lieu de faire défiler des dizaines de messages.</dd></div>
+    <div><dt>Ouvert à tous</dt><dd>Pas de groupe à rejoindre ni d'administrateur à convaincre : vous installez, vous voyez votre quartier.</dd></div>
+    <div><dt>Votre vie privée d'abord</dt><dd>Votre adresse n'est jamais montrée, les visages sont floutés automatiquement sur les photos, et un post signalé par plusieurs voisins disparaît.</dd></div>
+  </dl>
+</section>
+
+<footer class="pied" id="pied"><span>© 2026 Securicity</span><span>Presse et contact : contact@securicity.net</span><a href="#pied">Confidentialité</a><a href="#pied">Conditions d'utilisation</a></footer>
+
+<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>
+<script>
+{
+const etapes = [
+  ['La carte de votre quartier', 'Chaque repère est le signalement d’un voisin. Touchez-le pour savoir ce qui s’est passé.'],
+  ['Signaler en quelques secondes', 'Maintenez le repère, placez-le, dites ce qui s’est passé. Publié, et transmis à la police.'],
+  ['Avez-vous vu quelque chose ?', 'Demandez à vos voisins. Ils peuvent vous répondre pendant une semaine.'],
+  ['Prévenu au bon moment', 'Une alerte dès qu’un incident arrive dans votre rayon, autour de vous ou de chez vous.'],
+];
+const DUREE = 3500; // temps passé sur chaque écran
+const carte = '<svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg>';
+const onglets = '<div class="onglets"><span class="on">Carte</span><span>Mes posts</span><span class="plus">+</span><span>Alertes</span><span>Profil</span></div>';
+const ecrans = [
+  `${carte}<div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div>
+   <div class="pin" style="left:22%;top:30%"></div><div class="pin" style="left:66%;top:37%"></div>
+   <div class="pin" style="left:39%;top:57%"></div><span class="pq" style="left:39%;top:57%">!?</span>
+   <div class="pin" style="left:74%;top:62%"></div><div class="pin" style="left:13%;top:50%"></div>
+   <div class="haut"><div class="champ">Rechercher une adresse</div></div><div class="bas">${onglets}</div>`,
+  `${carte}<div class="ombre" style="left:calc(50% - 7px);top:41%"></div><div class="pin gros" style="left:calc(50% - 15px);top:calc(41% - 34px)"></div>
+   <div class="haut"><div class="bulle">Maintenez le repère pour le déplacer</div></div>
+   <div class="bas"><div class="carton"><small>Position du signalement</small><b>14 rue des Martyrs, Paris 9e</b></div><div class="bouton">Valider cette position</div></div>`,
+  `<div class="page"><div class="photo"></div>
+   <div class="titre"><span class="icone"><i data-lucide="house"></i></span><div><b style="font-size:14px">Cambriolage</b><br><small style="color:var(--app-discret)">Rue des Martyrs, il y a 2 h</small></div></div>
+   <div class="question"><small style="color:var(--app-discret)">!? Avez-vous vu quelque chose ?</small>Porte forcée vers 14 h. Si vous avez vu quelque chose, merci de me le dire.</div>
+   <div class="msg"><small>Voisine_Martyrs</small>Un scooter noir était garé devant le 14 vers 13 h 50.</div>
+   <div class="msg moi"><small>Vous</small>Merci, vous avez vu la plaque ?</div></div>`,
+  `<div class="page" style="background:linear-gradient(180deg,#DCE3EC,#F6F7F9 45%)">
+   <div class="notif-mini"><small style="color:var(--app-discret)">Securicity, maintenant</small><b>Vol de vélo à 250 m de chez vous</b><span>Place Pigalle. Touchez pour voir.</span></div>
+   <h4 style="margin-top:10px">Alertes</h4>
+   <div class="liste">
+     <div class="alerte"><span class="icone"><i data-lucide="bike"></i></span><div><b>Vol de vélo à 250 m</b><small>Place Pigalle, 21 h 42</small></div><span class="lu"></span></div>
+     <div class="alerte"><span class="icone"><i data-lucide="house"></i></span><div><b>Cambriolage à 180 m</b><small>Rue des Martyrs, 14 h 10</small></div><span class="lu"></span></div>
+     <div class="alerte"><span class="icone"><i data-lucide="spray-can"></i></span><div><b style="font-weight:500">Tag à 90 m</b><small>Rue Lepic, 18 h 05</small></div></div>
+     <div class="alerte"><span class="icone"><i data-lucide="megaphone"></i></span><div><b style="font-weight:500">Nuisances sonores à 300 m</b><small>Rue Blanche, hier</small></div></div>
+   </div></div>`,
+];
+
+const hote = document.querySelector('[data-tel]');
+const legende = document.querySelector('[data-legende]');
+hote.className = 'tel';
+hote.innerHTML = `<button type="button" class="coque" aria-label="Écran suivant de l'app"><div class="vitre"><div class="piste">${ecrans.map((e) => `<div class="ecran" aria-hidden="true">${e}</div>`).join('')}</div></div></button>
+  <div class="points">${etapes.map((e, n) => `<button type="button" aria-label="Écran ${n + 1} sur 4 : ${e[0]}"><span></span></button>`).join('')}</div>`;
+const piste = hote.querySelector('.piste');
+const points = [...hote.querySelectorAll('.points button')];
+
+// Repères rouges de la carte de fond : chacun ouvre un écran du téléphone.
+// Positions en % de la zone à droite du téléphone, du haut vers le bas : un repère par écran.
+const placesReperes = [[30, 6], [64, 30], [24, 54], [60, 78]];
+const zoneReperes = document.querySelector('[data-reperes]');
+zoneReperes.innerHTML = placesReperes.map(([x, y], n) => `<button type="button" class="repere" style="left:${x}%;top:${y}%" aria-label="${etapes[n][0]}"><i></i><b>${etapes[n][0]}</b></button>`).join('');
+const reperes = [...zoneReperes.children];
+
+let index = 0, minuteur, enPause = false;
+function aller(n) {
+  index = (n + etapes.length) % etapes.length;
+  piste.style.transform = `translateX(-${index * 100}%)`;
+  points.forEach((p, k) => p.setAttribute('aria-current', String(k === index)));
+  reperes.forEach((r, k) => r.classList.toggle('actif', k === index));
+  legende.innerHTML = `<b>${etapes[index][0]}</b><span>${etapes[index][1]}</span>`;
+  relancer();
+}
+function relancer() {
+  clearTimeout(minuteur);
+  if (!enPause) minuteur = setTimeout(() => aller(index + 1), DUREE);
+}
+hote.querySelector('.coque').onclick = () => aller(index + 1);
+points.forEach((p, n) => (p.onclick = () => aller(n)));
+reperes.forEach((r, n) => (r.onclick = () => aller(n)));
+// Pause quand la souris est sur le téléphone, ou quand l'onglet n'est pas visible.
+hote.addEventListener('mouseenter', () => { enPause = true; clearTimeout(minuteur); });
+hote.addEventListener('mouseleave', () => { enPause = false; relancer(); });
+document.addEventListener('visibilitychange', () => { enPause = document.hidden; relancer(); });
+
+// Envoi à Netlify Forms sans quitter la page.
+document.querySelector('[data-form]').onsubmit = async (e) => {
+  e.preventDefault();
+  const f = e.target, sortie = f.querySelector('output');
+  try {
+    const r = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(f)).toString() });
+    if (!r.ok) throw new Error();
+    f.reset();
+    sortie.textContent = 'C’est noté : vous serez prévenu à la sortie de l’app.';
+  } catch {
+    sortie.textContent = 'L’inscription n’a pas fonctionné. Vérifiez votre connexion et réessayez.';
+  }
+};
+
+try { lucide.createIcons(); } catch (e) {}
+aller(0);
+}
+</script>
+</body>
+</html>
