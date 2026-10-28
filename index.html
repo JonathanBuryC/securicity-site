@@ -8,7 +8,7 @@
 <meta property="og:title" content="Securicity, votre quartier vous prévient">
 <meta property="og:description" content="La carte des incivilités de votre quartier, signalées par vos voisins.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 48 48%27%3E%3Cpath d=%27M24 3C15.2 3 8 10.2 8 19c0 12.5 16 26 16 26s16-13.5 16-26C40 10.2 32.8 3 24 3z%27 fill=%27%23E0452F%27/%3E%3Ccircle cx=%2724%27 cy=%2719%27 r=%276.5%27 fill=%27%23fff%27/%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..900&display=swap">
 <style>
 /* Layout : la structure « La notification » (maquette 1) posée sur la carte du quartier (maquette 3).
    Accueil : carte plein cadre avec cercle et repères ; notifications, titre et formulaire à gauche ; téléphone à droite. */
@@ -19,7 +19,7 @@
   --sol:#ECEFF3; --rue:#FFFFFF; --eau:#C6D9EA; --parc:#D7E6D2;
 }
 *{box-sizing:border-box}
-body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Archivo",system-ui,sans-serif;margin:0}
+body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Public Sans",system-ui,sans-serif;margin:0}
 ::selection{background:var(--rouge);color:#fff}
 :focus-visible{outline:2px solid var(--bleu);outline-offset:3px;border-radius:4px}
 .tab{font-variant-numeric:tabular-nums}
@@ -29,7 +29,7 @@ body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Archivo",syst
 .coque{width:272px;height:560px;border-radius:44px;padding:9px;background:#070D17;border:0;cursor:pointer;display:block;box-shadow:0 2px 4px rgba(7,13,23,.3),0 34px 70px -24px rgba(7,13,23,.55)}
 .vitre{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--app-fond)}
 .piste{display:flex;height:100%;transition:transform .8s cubic-bezier(.16,1,.3,1)}
-.ecran{flex:none;width:100%;height:100%;position:relative;font:500 11px/1.35 "Archivo",sans-serif;color:var(--app-texte);text-align:left}
+.ecran{flex:none;width:100%;height:100%;position:relative;font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left}
 /* Indicateurs : un point par écran ; l'écran affiché s'étire en tiret, sans effet de chargement. */
 .points{display:flex;align-items:center}
 /* Le bouton est une zone de toucher invisible ; le point dessiné est le span à l'intérieur. */
@@ -80,7 +80,7 @@ body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Archivo",syst
 .alerte .lu{width:7px;height:7px;border-radius:50%;background:var(--rouge)}
 
 /* ---------- Page ---------- */
-.marque{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.01em;font-variation-settings:"wdth" 108}
+.marque{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.01em}
 .marque i{width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge)}
 
 .accueil{position:relative;overflow:hidden;background:var(--sol)}
@@ -118,29 +118,35 @@ body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Archivo",syst
 .notif:nth-child(1){top:0;left:0;z-index:3}
 .notif:nth-child(2){top:96px;left:34px;z-index:2;transform:scale(.97)}
 .notif:nth-child(3){top:184px;left:68px;z-index:1;transform:scale(.94)}
-h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;font-weight:900;font-variation-settings:"wdth" 112;margin:0 0 18px;text-wrap:balance;max-width:12ch}
+h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;font-weight:900;margin:0 0 18px;text-wrap:balance;max-width:13ch}
 .chapeau{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:0 0 30px}
 
-.prevenir{display:flex;flex-wrap:wrap;gap:8px;max-width:460px}
-.prevenir label{flex-basis:100%;font-weight:600;font-size:.95rem}
-.prevenir input{flex:1 1 220px;min-width:0;font:inherit;padding:13px 16px;border-radius:12px;border:1.5px solid #9AA6B8;background:#fff;color:var(--encre)}
-.prevenir input::placeholder{color:#5F6C80}
-.prevenir button{font:700 1rem "Archivo",sans-serif;padding:13px 20px;border-radius:12px;border:0;background:var(--rouge-btn);color:#fff;cursor:pointer}
-.prevenir button:hover{background:#A52F1E}
-.prevenir output{flex-basis:100%;font-size:.92rem;min-height:1.4em}
-.prevenir .mention{flex-basis:100%;color:var(--texte2);font-size:.85rem}
+.telecharger{display:flex;gap:20px;align-items:center;max-width:520px;background:#fff;border:1px solid var(--filet);border-radius:18px;padding:16px;box-shadow:0 1px 3px rgba(20,35,59,.1)}
+.qr{width:132px;height:132px;flex:none;border-radius:8px}
+.tel-texte{display:flex;flex-direction:column;gap:6px}
+.tel-texte b{font-size:1.15rem}
+.tel-texte span{color:var(--texte2);font-size:.95rem}
+.tel-texte small{color:var(--texte2);font-size:.85rem}
+.stores{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.stores a{background:var(--encre);color:#fff;text-decoration:none;font-weight:700;font-size:.92rem;padding:9px 16px;border-radius:10px}
+.stores a:hover{background:var(--bleu)}
+@media (max-width:420px){.telecharger{flex-direction:column;align-items:flex-start}}
 
 .etapes{background:var(--blanc);border-top:1px solid var(--filet)}
 .etapes .in{max-width:1180px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
 .etapes h2,.vie h2{font-size:clamp(1.8rem,3.4vw,2.6rem);letter-spacing:-.02em;margin:0;font-weight:800;text-wrap:balance}
 .etapes h2{grid-column:1/-1}
-.etape .num{font-size:clamp(4rem,9vw,7rem);line-height:.8;font-weight:900;color:var(--bleu);font-variation-settings:"wdth" 70}
+.etape .num{font-size:clamp(4rem,9vw,7rem);line-height:.8;font-weight:900;color:var(--bleu)}
 .etape p{margin:14px 0 0;color:var(--texte2);max-width:28ch}
 .etape b{color:var(--encre)}
 .vie{max-width:1180px;margin:0 auto;padding:80px 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px}
 .vie dl{margin:0;display:grid;gap:26px}
 .vie dt{font-weight:700;font-size:1.1rem}
 .vie dd{margin:4px 0 0;color:var(--texte2);max-width:56ch}
+.slogan{background:var(--bleu);color:#fff;padding:72px 24px;text-align:center}
+.slogan p{margin:0 auto;max-width:900px;font-size:clamp(1.8rem,4.6vw,3.4rem);line-height:1.1;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
+.marque-slogan{display:inline-flex;align-items:center;gap:.3em}
+.marque-slogan i{width:.55em;height:.55em;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff}
 .pied{max-width:1180px;margin:0 auto;padding:28px 24px 40px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:.9rem;color:var(--texte2);border-top:1px solid var(--filet)}
 .pied a{color:inherit;text-underline-offset:3px}
 
@@ -190,21 +196,21 @@ h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;fon
   <div class="scene">
     <div>
       <div class="pile" aria-label="Exemples de notifications">
-        <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 250 m de chez vous</b><small class="tab">21:42</small><span>Place Pigalle. Touchez pour voir le signalement.</span></div>
-        <div class="notif"><span class="ico"><i></i></span><b>Un voisin demande : avez-vous vu quelque chose ?</b><small class="tab">20:15</small><span>Cambriolage rue des Martyrs, vers 14 h.</span></div>
-        <div class="notif"><span class="ico"><i></i></span><b>Tag à 90 m de vous</b><small class="tab">18:03</small><span>Rue Lepic.</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Agression à 250 m de chez vous</b><small class="tab">22:08</small><span>Boulevard de Clichy, il y a 5 min. Touchez pour voir le signalement.</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Cambriolage rue des Martyrs</b><small class="tab">20:15</small><span>Un voisin cherche des témoins : avez-vous vu quelque chose vers 14 h ?</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 90 m de vous</b><small class="tab">18:03</small><span>Place Pigalle.</span></div>
       </div>
-      <h1>Votre quartier vous prévient.</h1>
-      <p class="chapeau">Les voisins signalent ce qu'ils voient sur une carte. Vous êtes averti dès que ça arrive près de chez vous, et chaque signalement est transmis à la police par e-mail.</p>
-      <form class="prevenir" name="sortie" method="POST" data-netlify="true" netlify-honeypot="piege" data-form>
-        <input type="hidden" name="form-name" value="sortie">
-        <p hidden><label>Ne pas remplir <input name="piege"></label></p>
-        <label for="mail">L'app arrive bientôt sur iPhone et Android.</label>
-        <input id="mail" name="email" type="email" required placeholder="votre@email.fr" autocomplete="email">
-        <button type="submit">Me prévenir à la sortie</button>
-        <output></output>
-        <small class="mention">Votre e-mail sert uniquement à vous prévenir de la sortie de l’app.</small>
-      </form>
+      <h1>Votre quartier vous prévient en temps réel.</h1>
+      <p class="chapeau">Soyons tous vigilants : partageons les informations utiles à notre sécurité et signalons les dangers, risques, vols, agressions… gratuitement et en toute confidentialité. Soyons solidaires, et demandons de l'aide à nos voisins quand il le faut.</p>
+      <div class="telecharger">
+        <svg class="qr" viewBox="-2 -2 29 29" role="img" aria-label="QR code de téléchargement (factice)"><rect x="-2" y="-2" width="29" height="29" fill="#fff"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM14 0h1v1h-1zM15 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM12 1h1v1h-1zM13 1h1v1h-1zM15 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM24 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM11 2h1v1h-1zM15 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM13 3h1v1h-1zM14 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM24 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM14 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM10 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM0 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM24 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM7 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM23 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM12 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM0 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM12 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM0 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM1 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM2 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM17 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM0 18h1v1h-1zM1 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM18 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM22 19h1v1h-1zM23 19h1v1h-1zM24 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM9 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM15 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM0 21h1v1h-1zM2 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM11 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM21 21h1v1h-1zM23 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM12 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM24 23h1v1h-1zM0 24h1v1h-1zM1 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1z" fill="#14233B"/></svg>
+        <div class="tel-texte">
+          <b>Téléchargez l'app maintenant</b>
+          <span>Scannez le code avec l'appareil photo de votre téléphone.</span>
+          <div class="stores"><a href="#" aria-label="Télécharger dans l'App Store">App Store</a><a href="#" aria-label="Disponible sur Google Play">Google Play</a></div>
+          <small>(faux code QR)</small>
+        </div>
+      </div>
     </div>
     <div class="colonne-tel">
       <div data-tel></div>
@@ -222,13 +228,16 @@ h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;fon
 </div></section>
 
 <section class="vie">
-  <h2>Ce que les groupes de quartier ne font pas.</h2>
+  <h2>Securicity, un service gratuit, respectueux de la confidentialité, simple, intuitif et paramétrable.</h2>
   <dl>
     <div><dt>Une carte, pas un fil de messages</dt><dd>Vous voyez où ça se passe, avec un rayon autour de chez vous, au lieu de faire défiler des dizaines de messages.</dd></div>
     <div><dt>Ouvert à tous</dt><dd>Pas de groupe à rejoindre ni d'administrateur à convaincre : vous installez, vous voyez votre quartier.</dd></div>
+    <div><dt>Gratuit et réglé pour vous</dt><dd>Aucun abonnement, aucune publicité. Choisissez votre rayon d'alerte, de 100 m à 3 km, autour de vous, de chez vous, ou les deux.</dd></div>
     <div><dt>Votre vie privée d'abord</dt><dd>Votre adresse n'est jamais montrée, les visages sont floutés automatiquement sur les photos, et un post signalé par plusieurs voisins disparaît.</dd></div>
   </dl>
 </section>
+
+<section class="slogan"><p><span class="marque-slogan"><i></i>Securicity,</span> votre quartier vous prévient.</p></section>
 
 <footer class="pied" id="pied"><span>© 2026 Securicity</span><span>Presse et contact : contact@securicity.net</span><a href="/confidentialite">Confidentialité</a><a href="/conditions">Conditions d'utilisation</a><a href="/mentions-legales">Mentions légales</a></footer>
 
@@ -304,20 +313,6 @@ reperes.forEach((r, n) => (r.onclick = () => aller(n)));
 hote.addEventListener('mouseenter', () => { enPause = true; clearTimeout(minuteur); });
 hote.addEventListener('mouseleave', () => { enPause = false; relancer(); });
 document.addEventListener('visibilitychange', () => { enPause = document.hidden; relancer(); });
-
-// Envoi à Netlify Forms sans quitter la page.
-document.querySelector('[data-form]').onsubmit = async (e) => {
-  e.preventDefault();
-  const f = e.target, sortie = f.querySelector('output');
-  try {
-    const r = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(new FormData(f)).toString() });
-    if (!r.ok) throw new Error();
-    f.reset();
-    sortie.textContent = 'C’est noté : vous serez prévenu à la sortie de l’app.';
-  } catch {
-    sortie.textContent = 'L’inscription n’a pas fonctionné. Vérifiez votre connexion et réessayez.';
-  }
-};
 
 try { lucide.createIcons(); } catch (e) {}
 aller(0);
