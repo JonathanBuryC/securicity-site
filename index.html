@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..900&display=swap">
 <style>
 /* Accueil épuré : la carte, le téléphone, le titre. Le reste se découvre en descendant :
-   les alertes qui tombent une à une, le carrousel des fonctions, la discussion « Avez-vous vu quelque chose ? ». */
+   les alertes qui tombent une à une sous le titre, le carrousel des fonctions, la discussion « Avez-vous vu quelque chose ? ». */
 :root{
   --bleu:#1B3FA8; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --police:#0B2A6F;
   --fond:#F6F7F9; --blanc:#FFFFFF; --filet:#D5DBE4;
@@ -105,13 +105,10 @@ button.coque{cursor:pointer}
 h1{font-size:clamp(3rem,7.2vw,6rem);line-height:.96;letter-spacing:-.04em;font-weight:900;margin:clamp(8px,4vh,48px) 0 0;max-width:10ch;color:var(--encre)}
 h1 em{font-style:normal;color:var(--bleu)}
 
-/* ---------- Alertes qui tombent une à une ---------- */
-/* Section haute : la scène reste collée à l'écran pendant qu'on descend, et chaque palier fait entrer une alerte. */
-.alertes{position:relative;height:300vh;background:var(--fond)}
-.alertes .colle{position:sticky;top:0;height:100svh;max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
-.alertes h2,.atouts h2,.temoins h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
-.alertes p,.temoins p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
-.pile{position:relative;height:330px}
+/* ---------- Alertes : elles tombent une à une sous le titre dès qu'on commence à défiler ---------- */
+.atouts h2,.temoins h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
+.temoins p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
+.pile{position:relative;height:330px;margin-top:clamp(28px,5vh,56px);max-width:620px}
 .notif{position:absolute;width:min(100%,580px);background:#fff;color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.1),0 26px 50px -22px rgba(20,35,59,.45);
   opacity:0;filter:blur(10px);transform:translateY(70px) scale(calc(var(--s) * .96));transition:opacity .7s var(--sortie),filter .7s var(--sortie),transform .9s var(--sortie)}
 .notif.vue{opacity:1;filter:blur(0);transform:translateY(0) scale(var(--s))}
@@ -128,7 +125,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 .atouts{background:var(--blanc);padding:96px 0 104px;overflow:hidden;border-top:1px solid var(--filet)}
 .atouts h2{max-width:1180px;margin:0 auto 48px;padding:0 24px}
 .defile{display:flex;gap:28px;width:max-content;animation:defile 60s linear infinite;padding-left:28px}
-.atouts:hover .defile,.atouts:focus-within .defile{animation-play-state:paused}
 @keyframes defile{to{transform:translateX(-50%)}}
 .atout{width:340px;flex:none}
 .visuel{position:relative;height:400px;border-radius:30px;overflow:hidden;display:grid;place-items:center;padding:28px;font:500 13px/1.4 "Public Sans",sans-serif;color:var(--app-texte)}
@@ -216,13 +212,13 @@ h1 em{font-style:normal;color:var(--bleu)}
 @media (max-width:960px){
   .scene{grid-template-columns:1fr;padding-bottom:56px}
   .colonne-tel{padding-right:0}
+  /* Sur petit écran, les alertes n'occupent pas de place : elles arrivent par-dessus le téléphone. */
+  .gauche{position:relative;z-index:4}
+  .pile{margin-bottom:-330px}
   .reperes{display:none}
   .accueil::before{background:linear-gradient(180deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.85) 30%,rgba(246,247,249,.4) 60%,rgba(246,247,249,.2) 100%)}
   .zone{left:50%;top:68%;width:90vw}
   .chez{left:50%;top:68%}
-  .alertes{height:260vh}
-  .alertes .colle{grid-template-columns:1fr;align-content:center;gap:32px}
-  .pile{height:300px}
   .temoins .in,.final{grid-template-columns:1fr}
   .temoins .tel{justify-self:center}
 }
@@ -230,7 +226,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   .marque{font-size:24px}
   .coque{width:248px;height:510px}
   .notif{padding:14px 16px;border-radius:22px}
-  .pile{height:360px}
+  .pile{height:360px;margin-bottom:-360px}
   .notif{width:calc(100% - 28px);gap:2px 12px}.notif .ico{width:40px;height:40px}
   .notif b{font-size:1rem}.notif span{font-size:.85rem}
   .notif:nth-child(2){left:14px;top:128px}.notif:nth-child(3){left:28px;top:250px}
@@ -242,7 +238,6 @@ h1 em{font-style:normal;color:var(--bleu)}
   .piste,.points button span,.notif,.fil .msg{transition:none}
   .notif,.fil .msg{opacity:1;filter:none;transform:none}
   .notif:nth-child(2){transform:scale(.97)}.notif:nth-child(3){transform:scale(.94)}
-  .alertes{height:auto}.alertes .colle{position:static;height:auto;padding-top:96px;padding-bottom:96px}
   .defile{animation:none;overflow-x:auto;width:auto}
   .defile [aria-hidden="true"]{display:none}
   .ecrit i{animation:none}
@@ -280,7 +275,14 @@ h1 em{font-style:normal;color:var(--bleu)}
 
   <header class="entete"><a class="marque" href="/" aria-label="Securicity, accueil"><i></i>Securicity</a><a class="presse" href="#pied">Presse</a></header>
   <div class="scene">
-    <h1>Votre quartier vous prévient <em>en temps réel.</em></h1>
+    <div class="gauche">
+      <h1>Votre quartier vous prévient <em>en temps réel.</em></h1>
+      <div class="pile" data-pile aria-label="Exemples d'alertes">
+        <div class="notif"><span class="ico"><i></i></span><b>Agression à 250 m de chez vous</b><small class="tab">22:08</small><span>Boulevard de Clichy, il y a 5 min. Touchez pour voir le signalement.</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Cambriolage rue des Martyrs</b><small class="tab">20:15</small><span>Un voisin cherche des témoins : avez-vous vu quelque chose vers 14 h ?</span></div>
+        <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 90 m de vous</b><small class="tab">18:03</small><span>Place Pigalle.</span></div>
+      </div>
+    </div>
     <div class="colonne-tel">
       <div data-tel></div>
       <div class="reperes" data-reperes></div>
@@ -288,19 +290,6 @@ h1 em{font-style:normal;color:var(--bleu)}
   </div>
 </section>
 
-<section class="alertes" data-alertes>
-  <div class="colle">
-    <div>
-      <h2>Prévenu dès que ça arrive près de chez vous.</h2>
-      <p>Quand un voisin signale quelque chose dans votre rayon, autour de vous ou de votre domicile, vous recevez l'alerte tout de suite.</p>
-    </div>
-    <div class="pile" aria-label="Exemples d'alertes">
-      <div class="notif"><span class="ico"><i></i></span><b>Agression à 250 m de chez vous</b><small class="tab">22:08</small><span>Boulevard de Clichy, il y a 5 min. Touchez pour voir le signalement.</span></div>
-      <div class="notif"><span class="ico"><i></i></span><b>Cambriolage rue des Martyrs</b><small class="tab">20:15</small><span>Un voisin cherche des témoins : avez-vous vu quelque chose vers 14 h ?</span></div>
-      <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 90 m de vous</b><small class="tab">18:03</small><span>Place Pigalle.</span></div>
-    </div>
-  </div>
-</section>
 
 <section class="atouts" aria-label="Ce que fait l'application">
   <h2>Tout votre quartier, dans une app.</h2>
@@ -416,14 +405,10 @@ hote.addEventListener('mouseenter', () => { enPause = true; clearTimeout(minuteu
 hote.addEventListener('mouseleave', () => { enPause = false; relancer(); });
 document.addEventListener('visibilitychange', () => { enPause = document.hidden; relancer(); });
 
-// ---------- Alertes : une de plus à chaque palier de défilement ----------
-const sectionAlertes = document.querySelector('[data-alertes]');
-const notifs = [...sectionAlertes.querySelectorAll('.notif')];
+// ---------- Alertes : une de plus tous les 90 px de défilement, dès les premiers ----------
+const notifs = [...document.querySelectorAll('[data-pile] .notif')];
 function suivreDefilement() {
-  const r = sectionAlertes.getBoundingClientRect();
-  const parcours = Math.max(1, r.height - innerHeight);
-  const p = Math.min(1, Math.max(0, -r.top / parcours));
-  notifs.forEach((n, k) => n.classList.toggle('vue', p > 0.08 + k * 0.26));
+  notifs.forEach((n, k) => n.classList.toggle('vue', scrollY > 20 + k * 90));
 }
 if (calme) notifs.forEach((n) => n.classList.add('vue'));
 else { addEventListener('scroll', suivreDefilement, { passive: true }); suivreDefilement(); }
@@ -441,27 +426,40 @@ const reponses = [
 ];
 const fil = document.querySelector('[data-fil]');
 const bulle = ([qui, texte]) => `<div class="msg${qui === 'Vous' ? ' moi' : ''}"><small>${qui}</small>${texte}</div>`;
+const attendre = (ms) => new Promise((ok) => setTimeout(ok, ms));
+let visible = false, enCours = false;
 async function raconter() {
-  const attendre = (ms) => new Promise((ok) => setTimeout(ok, ms));
-  for (const r of reponses) {
-    const ecrit = document.createElement('div');
-    ecrit.className = 'ecrit';
-    ecrit.innerHTML = '<i></i><i></i><i></i>';
-    if (r[0] !== 'Vous') { fil.append(ecrit); await attendre(30); ecrit.classList.add('vue'); await attendre(1100); ecrit.remove(); }
-    else await attendre(700);
-    fil.insertAdjacentHTML('beforeend', bulle(r));
-    const m = fil.lastElementChild;
-    // Comme dans une vraie discussion : les plus anciens messages sortent par le haut, jamais coupés.
-    while (fil.scrollHeight > fil.clientHeight && fil.children.length > 1) fil.firstElementChild.remove();
-    await attendre(30);
-    m.classList.add('vue');
-    await attendre(900);
+  enCours = true;
+  while (visible) {
+    fil.innerHTML = '';
+    await attendre(600);
+    for (const r of reponses) {
+      if (!visible) break;
+      if (r[0] !== 'Vous') {
+        const ecrit = document.createElement('div');
+        ecrit.className = 'ecrit';
+        ecrit.innerHTML = '<i></i><i></i><i></i>';
+        fil.append(ecrit);
+        await attendre(30); ecrit.classList.add('vue');
+        await attendre(1200); ecrit.remove();
+      } else await attendre(800);
+      fil.insertAdjacentHTML('beforeend', bulle(r));
+      const m = fil.lastElementChild;
+      // Comme dans une vraie discussion : les plus anciens messages sortent par le haut, jamais coupés.
+      while (fil.scrollHeight > fil.clientHeight && fil.children.length > 1) fil.firstElementChild.remove();
+      await attendre(30);
+      m.classList.add('vue');
+      await attendre(1000);
+    }
+    await attendre(3500);
   }
+  enCours = false;
 }
 if (calme) { fil.innerHTML = reponses.map(bulle).join(''); fil.querySelectorAll('.msg').forEach((m) => m.classList.add('vue')); }
-else new IntersectionObserver((entrees, obs) => {
-  if (entrees[0].isIntersecting) { obs.disconnect(); raconter(); }
-}, { threshold: 0.55 }).observe(document.querySelector('[data-discussion]'));
+else new IntersectionObserver((entrees) => {
+  visible = entrees[0].isIntersecting;
+  if (visible && !enCours) raconter();
+}, { threshold: 0.6 }).observe(document.querySelector('[data-discussion]'));
 
 try { lucide.createIcons(); } catch (e) {}
 aller(0);
