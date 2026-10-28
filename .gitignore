@@ -4,3 +4,6 @@ Thumbs.db
 
 # Notes locales
 *.txt
+
+# Réglages Claude Code (local)
+.claude/
