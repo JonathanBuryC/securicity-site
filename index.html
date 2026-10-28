@@ -4,41 +4,42 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Securicity, votre quartier vous prévient</title>
-<meta name="description" content="Les voisins signalent les incivilités sur une carte. Vous êtes prévenu dès que ça arrive près de chez vous, et chaque signalement est transmis à la police.">
+<meta name="description" content="Les voisins signalent les incivilités sur une carte. Vous êtes prévenu en temps réel dès que ça arrive près de chez vous. Gratuit et confidentiel.">
 <meta property="og:title" content="Securicity, votre quartier vous prévient">
 <meta property="og:description" content="La carte des incivilités de votre quartier, signalées par vos voisins.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 48 48%27%3E%3Cpath d=%27M24 3C15.2 3 8 10.2 8 19c0 12.5 16 26 16 26s16-13.5 16-26C40 10.2 32.8 3 24 3z%27 fill=%27%23E0452F%27/%3E%3Ccircle cx=%2724%27 cy=%2719%27 r=%276.5%27 fill=%27%23fff%27/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..900&display=swap">
 <style>
-/* Layout : la structure « La notification » (maquette 1) posée sur la carte du quartier (maquette 3).
-   Accueil : carte plein cadre avec cercle et repères ; notifications, titre et formulaire à gauche ; téléphone à droite. */
+/* Accueil épuré : la carte, le téléphone, le titre. Le reste se découvre en descendant :
+   les alertes qui tombent une à une, le carrousel des fonctions, la discussion « Avez-vous vu quelque chose ? ». */
 :root{
-  --bleu:#1B3FA8; --ciel:#7DBEFF; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --rouge-btn:#C23824;
+  --bleu:#1B3FA8; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --police:#0B2A6F;
   --fond:#F6F7F9; --blanc:#FFFFFF; --filet:#D5DBE4;
   --app-fond:#F6F7F9; --app-surface:#FFFFFF; --app-texte:#14233B; --app-discret:#4A586D; --app-bordure:#D5DBE4;
   --sol:#ECEFF3; --rue:#FFFFFF; --eau:#C6D9EA; --parc:#D7E6D2;
+  --sortie:cubic-bezier(.16,1,.3,1);
 }
 *{box-sizing:border-box}
+html{scrollbar-color:#9AA6B8 var(--fond)}
 body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Public Sans",system-ui,sans-serif;margin:0}
 ::selection{background:var(--rouge);color:#fff}
 :focus-visible{outline:2px solid var(--bleu);outline-offset:3px;border-radius:4px}
 .tab{font-variant-numeric:tabular-nums}
+h1,h2{text-wrap:balance}
 
 /* ---------- Téléphone ---------- */
 .tel{display:flex;flex-direction:column;align-items:center;gap:16px}
-.coque{width:272px;height:560px;border-radius:44px;padding:9px;background:#070D17;border:0;cursor:pointer;display:block;box-shadow:0 2px 4px rgba(7,13,23,.3),0 34px 70px -24px rgba(7,13,23,.55)}
+.coque{width:272px;height:560px;border-radius:44px;padding:9px;background:#070D17;border:0;display:block;box-shadow:0 2px 4px rgba(7,13,23,.3),0 34px 70px -24px rgba(7,13,23,.55)}
+button.coque{cursor:pointer}
 .vitre{position:relative;width:100%;height:100%;border-radius:36px;overflow:hidden;background:var(--app-fond)}
-.piste{display:flex;height:100%;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.piste{display:flex;height:100%;transition:transform .8s var(--sortie)}
 .ecran{flex:none;width:100%;height:100%;position:relative;font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left}
-/* Indicateurs : un point par écran ; l'écran affiché s'étire en tiret, sans effet de chargement. */
 .points{display:flex;align-items:center}
-/* Le bouton est une zone de toucher invisible ; le point dessiné est le span à l'intérieur. */
 .points button{height:28px;padding:0 4px;border:0;background:none;cursor:pointer;display:grid;place-items:center}
-.points button span{display:block;width:9px;height:9px;border-radius:99px;background:rgba(20,35,59,.28);transition:width .5s cubic-bezier(.16,1,.3,1),background-color .5s}
+.points button span{display:block;width:9px;height:9px;border-radius:99px;background:rgba(20,35,59,.28);transition:width .5s var(--sortie),background-color .5s}
 .points button[aria-current="true"] span{width:32px;background:var(--encre)}
 .points button:hover span{background:rgba(20,35,59,.5)}
 .points button[aria-current="true"]:hover span{background:var(--encre)}
-@media (prefers-reduced-motion:reduce){.piste,.points button span{transition:none}}
 
 /* Écrans de l'app */
 .carte{position:absolute;inset:0;width:100%;height:100%}
@@ -79,88 +80,173 @@ body{background:var(--fond);color:var(--encre);font:400 17px/1.55 "Public Sans",
 .alerte div{flex:1;min-width:0;display:flex;flex-direction:column}
 .alerte .lu{width:7px;height:7px;border-radius:50%;background:var(--rouge)}
 
-/* ---------- Page ---------- */
-.marque{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.01em}
-.marque i{width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge)}
+/* ---------- Accueil ---------- */
+.marque{display:flex;align-items:center;gap:12px;font-weight:800;font-size:28px;letter-spacing:-.015em;color:var(--encre);text-decoration:none}
+.marque i{width:24px;height:24px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff;box-shadow:0 2px 6px rgba(20,35,59,.25)}
 
-.accueil{position:relative;overflow:hidden;background:var(--sol)}
+.accueil{position:relative;overflow:hidden;background:var(--sol);min-height:min(100svh,920px)}
 .accueil .fond{position:absolute;inset:0;width:100%;height:100%}
-/* Voile clair à gauche : la carte reste visible, le texte reste lisible. */
-.accueil::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(246,247,249,.97) 0%,rgba(246,247,249,.92) 38%,rgba(246,247,249,.35) 62%,rgba(246,247,249,0) 78%)}
-.zone{position:absolute;z-index:1;left:66%;top:52%;width:min(52vw,640px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--bleu);background:rgba(27,63,168,.07)}
-.zone span{position:absolute;left:9%;top:12%;background:var(--bleu);color:#fff;font-weight:700;font-size:.85rem;padding:3px 10px;border-radius:99px}
-.chez{position:absolute;z-index:2;left:66%;top:52%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:3px solid var(--bleu);display:grid;place-items:center;color:var(--bleu)}
+.accueil::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.88) 36%,rgba(246,247,249,.2) 60%,rgba(246,247,249,0) 76%)}
+.zone{position:absolute;z-index:1;left:68%;top:54%;width:min(52vw,640px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px solid var(--bleu);background:rgba(27,63,168,.07)}
+.zone span{position:absolute;left:50%;bottom:-14px;transform:translateX(-50%);background:var(--bleu);color:#fff;font-weight:700;font-size:.85rem;padding:3px 10px;border-radius:99px}
+.chez{position:absolute;z-index:2;left:68%;top:54%;transform:translate(-50%,-50%);width:44px;height:44px;border-radius:50%;background:#fff;border:3px solid var(--bleu);display:grid;place-items:center;color:var(--bleu)}
 .chez svg{width:22px;height:22px}
 .repere{position:absolute;z-index:2;border:0;padding:0;background:none;cursor:pointer;width:44px;height:52px;display:grid;place-items:end center}
-.repere i{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);transition:transform .35s cubic-bezier(.16,1,.3,1),border-color .35s}
+.repere i{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff;box-shadow:0 4px 10px rgba(0,0,0,.25);transition:transform .35s var(--sortie),border-color .35s}
 .repere:hover i,.repere.actif i{transform:rotate(-45deg) scale(1.2);border-color:#000}
 .repere b{position:absolute;bottom:54px;white-space:nowrap;background:#fff;border-radius:8px;padding:3px 9px;font-size:.8rem;box-shadow:0 1px 3px rgba(20,35,59,.2);opacity:0;transition:opacity .3s}
 .repere:hover b,.repere.actif b,.repere:focus-visible b{opacity:1}
-/* Les quatre repères, un par écran, posés sur la carte à droite du téléphone. */
 .reperes{position:absolute;top:0;right:0;width:150px;height:560px}
 
-.entete{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
-.entete a{color:var(--encre);text-decoration:underline;text-underline-offset:4px;font-weight:600}
-.scene{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:12px 24px 80px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px 64px;align-items:start}
-/* Colonne du téléphone : collante d'un bloc, avec sa légende, jusqu'à la fin de l'accueil. */
-.colonne-tel{position:relative;display:flex;flex-direction:column;align-items:center;gap:14px;padding-right:150px}
-.legende{max-width:300px;text-align:center;min-height:76px;background:rgba(255,255,255,.92);border-radius:14px;padding:10px 14px;box-shadow:0 1px 3px rgba(20,35,59,.15)}
-.legende b{display:block;font-size:1rem}
-.legende span{color:var(--texte2);font-size:.92rem}
+.entete{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:26px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+.entete a.presse{color:var(--encre);text-decoration:underline;text-underline-offset:4px;font-weight:600}
+.scene{position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:24px 24px 72px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px 64px;align-items:start}
+.colonne-tel{position:relative;display:flex;flex-direction:column;align-items:center;padding-right:150px}
+h1{font-size:clamp(3rem,7.2vw,6rem);line-height:.96;letter-spacing:-.04em;font-weight:900;margin:clamp(8px,4vh,48px) 0 0;max-width:10ch;color:var(--encre)}
+h1 em{font-style:normal;color:var(--bleu)}
 
-.pile{position:relative;height:300px;margin:8px 0 40px;max-width:620px}
-.notif{position:absolute;width:min(100%,560px);background:rgba(255,255,255,.97);color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.12),0 26px 50px -22px rgba(20,35,59,.45)}
-.notif .ico{grid-row:span 2;width:44px;height:44px;border-radius:12px;background:var(--bleu);display:grid;place-items:center}
+/* ---------- Alertes qui tombent une à une ---------- */
+/* Section haute : la scène reste collée à l'écran pendant qu'on descend, et chaque palier fait entrer une alerte. */
+.alertes{position:relative;height:300vh;background:var(--fond)}
+.alertes .colle{position:sticky;top:0;height:100svh;max-width:1180px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:48px;align-items:center}
+.alertes h2,.atouts h2,.temoins h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
+.alertes p,.temoins p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
+.pile{position:relative;height:330px}
+.notif{position:absolute;width:min(100%,580px);background:#fff;color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.1),0 26px 50px -22px rgba(20,35,59,.45);
+  opacity:0;filter:blur(10px);transform:translateY(70px) scale(calc(var(--s) * .96));transition:opacity .7s var(--sortie),filter .7s var(--sortie),transform .9s var(--sortie)}
+.notif.vue{opacity:1;filter:blur(0);transform:translateY(0) scale(var(--s))}
+.notif .ico{grid-row:span 2;width:46px;height:46px;border-radius:12px;background:var(--bleu);display:grid;place-items:center}
 .notif .ico i{width:18px;height:18px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff}
 .notif b{font-size:clamp(1.05rem,2.3vw,1.45rem);line-height:1.2;letter-spacing:-.01em}
 .notif span{color:var(--texte2);font-size:.95rem}
 .notif small{grid-row:1;grid-column:3;color:var(--texte2);font-size:.85rem;align-self:start}
-.notif:nth-child(1){top:0;left:0;z-index:3}
-.notif:nth-child(2){top:96px;left:34px;z-index:2;transform:scale(.97)}
-.notif:nth-child(3){top:184px;left:68px;z-index:1;transform:scale(.94)}
-h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;font-weight:900;margin:0 0 18px;text-wrap:balance;max-width:13ch}
-.chapeau{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:0 0 30px}
+.notif:nth-child(1){--s:1;top:0;left:0;z-index:3}
+.notif:nth-child(2){--s:.97;top:104px;left:36px;z-index:2}
+.notif:nth-child(3){--s:.94;top:200px;left:72px;z-index:1}
 
-.telecharger{display:flex;gap:20px;align-items:center;max-width:520px;background:#fff;border:1px solid var(--filet);border-radius:18px;padding:16px;box-shadow:0 1px 3px rgba(20,35,59,.1)}
+/* ---------- Carrousel des fonctions ---------- */
+.atouts{background:var(--blanc);padding:96px 0 104px;overflow:hidden;border-top:1px solid var(--filet)}
+.atouts h2{max-width:1180px;margin:0 auto 48px;padding:0 24px}
+.defile{display:flex;gap:28px;width:max-content;animation:defile 60s linear infinite;padding-left:28px}
+.atouts:hover .defile,.atouts:focus-within .defile{animation-play-state:paused}
+@keyframes defile{to{transform:translateX(-50%)}}
+.atout{width:340px;flex:none}
+.visuel{position:relative;height:400px;border-radius:30px;overflow:hidden;display:grid;place-items:center;padding:28px;font:500 13px/1.4 "Public Sans",sans-serif;color:var(--app-texte)}
+.atout h3{font-size:1.65rem;line-height:1.1;letter-spacing:-.02em;margin:22px 4px 0;font-weight:800}
+.v-carte{background:var(--sol)}
+.v-carte .rayon{width:190px;height:190px}
+.v-carte .maison{width:30px;height:30px}.v-carte .maison svg{width:16px;height:16px}
+.v-carte .pin{width:24px;height:24px;border-width:3px}
+.v-repere{background:linear-gradient(165deg,#2A55D1,#1B3FA8 55%,#14307F)}
+.v-repere .bulle{position:absolute;top:44px;left:28px;right:28px;font-size:14px;font-weight:600}
+.v-repere .pin.gros{position:static;width:64px;height:64px;border-width:5px;border-color:#000;box-shadow:0 14px 26px rgba(0,0,0,.35)}
+.v-repere .ombre{position:absolute;left:calc(50% - 16px);top:calc(50% + 46px);width:32px;height:10px}
+.v-photo{background:linear-gradient(160deg,#E9ECF1,#CDD4DF)}
+.v-photo .cadre{width:100%;background:#fff;border-radius:18px;padding:12px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:10px}
+.v-photo .photo{height:180px;border-radius:12px}
+.v-photo .photo::after{filter:blur(9px);width:36px;height:42px}
+.puce{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:rgba(27,63,168,.1);color:var(--bleu);font-weight:700;border-radius:99px;padding:5px 11px}
+.puce svg{width:14px;height:14px}
+.v-rayon{background:#DCE6F7}
+.v-rayon .reglages{width:100%;background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:12px}
+.v-rayon .valeur{display:flex;align-items:center;justify-content:space-between}
+.v-rayon .valeur b{font-size:34px;letter-spacing:-.03em}
+.rond{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--app-bordure);display:grid;place-items:center;font-size:20px;font-weight:600}
+.ligne{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--app-bordure)}
+.interrupteur{width:40px;height:24px;border-radius:99px;background:#34C759;position:relative;flex:none}
+.interrupteur::after{content:"";position:absolute;right:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.v-question{background:#FBE4DF}
+.v-question .scene-q{display:flex;flex-direction:column;align-items:center;gap:22px;width:100%}
+.v-question .pin{position:relative;width:54px;height:54px;border-width:4px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
+.v-question .pq{position:absolute;margin:0;left:calc(50% + 14px);top:-6px;font-size:13px;line-height:19px;padding:0 6px;border-width:2px}
+.v-question .question{background:#fff;width:100%;padding:12px 14px;border-radius:14px;box-shadow:0 12px 28px -16px rgba(20,35,59,.45)}
+.v-police{background:var(--police)}
+.v-police .carte-police{width:100%;border-radius:18px;padding:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;flex-direction:column;gap:10px}
+.v-police .entete-p{display:flex;align-items:center;gap:12px;font-weight:700;font-size:15px}
+.v-police .bouclier{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
+.v-police .bouclier svg{width:22px;height:22px}
+.v-police .interrupteur{background:#4C6FD1;margin-left:auto}
+.v-police p{margin:0;color:#DCE4F7;font-size:12.5px}
+.v-moderation{background:var(--parc)}
+.v-moderation .feuille{width:100%;background:#fff;border-radius:18px;padding:6px 16px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45)}
+.v-moderation .action{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--app-bordure);font-weight:600;font-size:14px}
+.v-moderation .action:first-child{border-top:0}
+.v-moderation .action svg{width:20px;height:20px;color:var(--app-discret)}
+.v-moderation .action.rouge,.v-moderation .action.rouge svg{color:#C23824}
+
+/* ---------- Avez-vous vu quelque chose ? ---------- */
+.temoins{position:relative;overflow:hidden;background:var(--sol)}
+.temoins .fond{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.temoins .in{position:relative;max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px 80px;align-items:center}
+.temoins .texte{background:rgba(246,247,249,.92);border-radius:24px;padding:32px 34px;max-width:520px}
+.pq-titre{display:inline-grid;place-items:center;background:var(--encre);color:#fff;font-size:.6em;font-weight:800;border-radius:99px;padding:0 .35em;line-height:1.3;vertical-align:.25em;margin-left:.15em;letter-spacing:0}
+.fil{display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;overflow:hidden}
+.fil .msg{opacity:0;transform:translateY(10px) scale(.96);transition:opacity .45s var(--sortie),transform .55s var(--sortie);transform-origin:bottom left}
+.fil .msg.moi{transform-origin:bottom right}
+.fil .msg.vue{opacity:1;transform:none}
+.ecrit{align-self:flex-start;background:var(--app-fond);border-radius:12px;padding:9px 11px;display:flex;gap:4px;opacity:0;transition:opacity .2s}
+.ecrit.vue{opacity:1}
+.ecrit i{width:6px;height:6px;border-radius:50%;background:var(--app-discret);animation:point 1s infinite}
+.ecrit i:nth-child(2){animation-delay:.15s}.ecrit i:nth-child(3){animation-delay:.3s}
+@keyframes point{0%,60%,100%{opacity:.3}30%{opacity:1}}
+[data-discussion] .page{background:#fff}
+[data-discussion] .vitre{font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left}
+.saisie{background:var(--app-surface);border:1px solid var(--app-bordure);border-radius:18px;padding:8px 12px;color:var(--app-discret)}
+
+/* ---------- Fin : promesse + téléchargement ---------- */
+.final{max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px 72px;align-items:end}
+.final p{color:var(--texte2);font-size:1.12rem;max-width:52ch;margin:22px 0 0}
+.telecharger{display:flex;gap:20px;align-items:center;background:#fff;border:1px solid var(--filet);border-radius:22px;padding:18px;box-shadow:0 2px 6px rgba(20,35,59,.06),0 24px 48px -28px rgba(20,35,59,.35)}
 .qr{width:132px;height:132px;flex:none;border-radius:8px}
 .tel-texte{display:flex;flex-direction:column;gap:6px}
 .tel-texte b{font-size:1.15rem}
 .tel-texte span{color:var(--texte2);font-size:.95rem}
 .tel-texte small{color:var(--texte2);font-size:.85rem}
 .stores{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-.stores a{background:var(--encre);color:#fff;text-decoration:none;font-weight:700;font-size:.92rem;padding:9px 16px;border-radius:10px}
+.stores a{background:var(--encre);color:#fff;text-decoration:none;font-weight:700;font-size:.92rem;padding:9px 16px;border-radius:10px;transition:background-color .2s}
 .stores a:hover{background:var(--bleu)}
-@media (max-width:420px){.telecharger{flex-direction:column;align-items:flex-start}}
 
-.etapes{background:var(--blanc);border-top:1px solid var(--filet)}
-.etapes .in{max-width:1180px;margin:0 auto;padding:72px 24px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px}
-.etapes h2,.vie h2{font-size:clamp(1.8rem,3.4vw,2.6rem);letter-spacing:-.02em;margin:0;font-weight:800;text-wrap:balance}
-.etapes h2{grid-column:1/-1}
-.etape .num{font-size:clamp(4rem,9vw,7rem);line-height:.8;font-weight:900;color:var(--bleu)}
-.etape p{margin:14px 0 0;color:var(--texte2);max-width:28ch}
-.etape b{color:var(--encre)}
-.vie{max-width:1180px;margin:0 auto;padding:80px 24px;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:56px}
-.vie dl{margin:0;display:grid;gap:26px}
-.vie dt{font-weight:700;font-size:1.1rem}
-.vie dd{margin:4px 0 0;color:var(--texte2);max-width:56ch}
-.slogan{background:var(--bleu);color:#fff;padding:72px 24px;text-align:center}
+.slogan{background:var(--bleu);color:#fff;padding:80px 24px;text-align:center}
 .slogan p{margin:0 auto;max-width:900px;font-size:clamp(1.8rem,4.6vw,3.4rem);line-height:1.1;font-weight:800;letter-spacing:-.02em;text-wrap:balance}
 .marque-slogan{display:inline-flex;align-items:center;gap:.3em}
 .marque-slogan i{width:.55em;height:.55em;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);border:3px solid #fff}
-.pied{max-width:1180px;margin:0 auto;padding:28px 24px 40px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:.9rem;color:var(--texte2);border-top:1px solid var(--filet)}
+.pied{max-width:1180px;margin:0 auto;padding:28px 24px 40px;display:flex;flex-wrap:wrap;gap:12px 28px;font-size:.9rem;color:var(--texte2)}
 .pied a{color:inherit;text-underline-offset:3px}
 
 @media (max-width:960px){
-  .scene{grid-template-columns:1fr}
+  .scene{grid-template-columns:1fr;padding-bottom:56px}
   .colonne-tel{padding-right:0}
   .reperes{display:none}
-  .accueil::before{background:linear-gradient(180deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.9) 55%,rgba(246,247,249,.55) 100%)}
-  .zone{left:50%;top:78%;width:90vw}
-  .chez{left:50%;top:78%}
-  .etapes .in,.vie{grid-template-columns:1fr}
-  .pile{height:270px}
+  .accueil::before{background:linear-gradient(180deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.85) 30%,rgba(246,247,249,.4) 60%,rgba(246,247,249,.2) 100%)}
+  .zone{left:50%;top:68%;width:90vw}
+  .chez{left:50%;top:68%}
+  .alertes{height:260vh}
+  .alertes .colle{grid-template-columns:1fr;align-content:center;gap:32px}
+  .pile{height:300px}
+  .temoins .in,.final{grid-template-columns:1fr}
+  .temoins .tel{justify-self:center}
 }
-@media (max-width:420px){.coque{width:248px;height:510px}.notif:nth-child(2){left:16px}.notif:nth-child(3){left:32px}}
+@media (max-width:520px){
+  .marque{font-size:24px}
+  .coque{width:248px;height:510px}
+  .notif{padding:14px 16px;border-radius:22px}
+  .pile{height:360px}
+  .notif{width:calc(100% - 28px);gap:2px 12px}.notif .ico{width:40px;height:40px}
+  .notif b{font-size:1rem}.notif span{font-size:.85rem}
+  .notif:nth-child(2){left:14px;top:128px}.notif:nth-child(3){left:28px;top:250px}
+  .atout{width:280px}.visuel{height:340px}
+  .telecharger{flex-direction:column;align-items:flex-start}
+  .temoins .texte{padding:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  .piste,.points button span,.notif,.fil .msg{transition:none}
+  .notif,.fil .msg{opacity:1;filter:none;transform:none}
+  .notif:nth-child(2){transform:scale(.97)}.notif:nth-child(3){transform:scale(.94)}
+  .alertes{height:auto}.alertes .colle{position:static;height:auto;padding-top:96px;padding-bottom:96px}
+  .defile{animation:none;overflow-x:auto;width:auto}
+  .defile [aria-hidden="true"]{display:none}
+  .ecrit i{animation:none}
+}
 </style>
 </head>
 <body>
@@ -192,49 +278,75 @@ h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;fon
   <div class="zone" aria-hidden="true"><span>500 m</span></div>
   <div class="chez" aria-hidden="true"><i data-lucide="map-pin-house"></i></div>
 
-  <div class="entete"><div class="marque"><i></i>Securicity</div><a href="#pied">Presse</a></div>
+  <header class="entete"><a class="marque" href="/" aria-label="Securicity, accueil"><i></i>Securicity</a><a class="presse" href="#pied">Presse</a></header>
   <div class="scene">
-    <div>
-      <div class="pile" aria-label="Exemples de notifications">
-        <div class="notif"><span class="ico"><i></i></span><b>Agression à 250 m de chez vous</b><small class="tab">22:08</small><span>Boulevard de Clichy, il y a 5 min. Touchez pour voir le signalement.</span></div>
-        <div class="notif"><span class="ico"><i></i></span><b>Cambriolage rue des Martyrs</b><small class="tab">20:15</small><span>Un voisin cherche des témoins : avez-vous vu quelque chose vers 14 h ?</span></div>
-        <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 90 m de vous</b><small class="tab">18:03</small><span>Place Pigalle.</span></div>
-      </div>
-      <h1>Votre quartier vous prévient en temps réel.</h1>
-      <p class="chapeau">Soyons tous vigilants : partageons les informations utiles à notre sécurité et signalons les dangers, risques, vols, agressions… gratuitement et en toute confidentialité. Soyons solidaires, et demandons de l'aide à nos voisins quand il le faut.</p>
-      <div class="telecharger">
-        <svg class="qr" viewBox="-2 -2 29 29" role="img" aria-label="QR code de téléchargement (factice)"><rect x="-2" y="-2" width="29" height="29" fill="#fff"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM14 0h1v1h-1zM15 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM12 1h1v1h-1zM13 1h1v1h-1zM15 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM24 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM11 2h1v1h-1zM15 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM13 3h1v1h-1zM14 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM24 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM14 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM10 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM0 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM24 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM7 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM23 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM12 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM0 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM12 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM0 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM1 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM2 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM17 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM0 18h1v1h-1zM1 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM18 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM22 19h1v1h-1zM23 19h1v1h-1zM24 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM9 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM15 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM0 21h1v1h-1zM2 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM11 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM21 21h1v1h-1zM23 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM12 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM24 23h1v1h-1zM0 24h1v1h-1zM1 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1z" fill="#14233B"/></svg>
-        <div class="tel-texte">
-          <b>Téléchargez l'app maintenant</b>
-          <span>Scannez le code avec l'appareil photo de votre téléphone.</span>
-          <div class="stores"><a href="#" aria-label="Télécharger dans l'App Store">App Store</a><a href="#" aria-label="Disponible sur Google Play">Google Play</a></div>
-          <small>(faux code QR)</small>
-        </div>
-      </div>
-    </div>
+    <h1>Votre quartier vous prévient <em>en temps réel.</em></h1>
     <div class="colonne-tel">
       <div data-tel></div>
-      <div class="legende" data-legende aria-live="polite"></div>
       <div class="reperes" data-reperes></div>
     </div>
   </div>
 </section>
 
-<section class="etapes"><div class="in">
-  <h2>Signaler prend trois gestes.</h2>
-  <div class="etape"><div class="num">1</div><p><b>Placez le repère.</b> Maintenez-le, faites-le glisser là où ça s'est passé.</p></div>
-  <div class="etape"><div class="num">2</div><p><b>Dites ce qui s'est passé.</b> Le type, quelques mots, une photo si vous voulez.</p></div>
-  <div class="etape"><div class="num">3</div><p><b>Publiez.</b> Le quartier est prévenu, la police reçoit le signalement.</p></div>
-</div></section>
+<section class="alertes" data-alertes>
+  <div class="colle">
+    <div>
+      <h2>Prévenu dès que ça arrive près de chez vous.</h2>
+      <p>Quand un voisin signale quelque chose dans votre rayon, autour de vous ou de votre domicile, vous recevez l'alerte tout de suite.</p>
+    </div>
+    <div class="pile" aria-label="Exemples d'alertes">
+      <div class="notif"><span class="ico"><i></i></span><b>Agression à 250 m de chez vous</b><small class="tab">22:08</small><span>Boulevard de Clichy, il y a 5 min. Touchez pour voir le signalement.</span></div>
+      <div class="notif"><span class="ico"><i></i></span><b>Cambriolage rue des Martyrs</b><small class="tab">20:15</small><span>Un voisin cherche des témoins : avez-vous vu quelque chose vers 14 h ?</span></div>
+      <div class="notif"><span class="ico"><i></i></span><b>Vol de vélo à 90 m de vous</b><small class="tab">18:03</small><span>Place Pigalle.</span></div>
+    </div>
+  </div>
+</section>
 
-<section class="vie">
-  <h2>Securicity, un service gratuit, respectueux de la confidentialité, simple, intuitif et paramétrable.</h2>
-  <dl>
-    <div><dt>Une carte, pas un fil de messages</dt><dd>Vous voyez où ça se passe, avec un rayon autour de chez vous, au lieu de faire défiler des dizaines de messages.</dd></div>
-    <div><dt>Ouvert à tous</dt><dd>Pas de groupe à rejoindre ni d'administrateur à convaincre : vous installez, vous voyez votre quartier.</dd></div>
-    <div><dt>Gratuit et réglé pour vous</dt><dd>Aucun abonnement, aucune publicité. Choisissez votre rayon d'alerte, de 100 m à 3 km, autour de vous, de chez vous, ou les deux.</dd></div>
-    <div><dt>Votre vie privée d'abord</dt><dd>Votre adresse n'est jamais montrée, les visages sont floutés automatiquement sur les photos, et un post signalé par plusieurs voisins disparaît.</dd></div>
-  </dl>
+<section class="atouts" aria-label="Ce que fait l'application">
+  <h2>Tout votre quartier, dans une app.</h2>
+  <div class="defile" data-defile>
+    <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
+    <div class="atout"><div class="visuel v-repere"><div class="bulle">Maintenez le repère pour le déplacer</div><div class="pin gros"></div><div class="ombre"></div></div><h3>Signaler en quelques secondes</h3></div>
+    <div class="atout"><div class="visuel v-photo"><div class="cadre"><div class="photo"></div><span class="puce"><i data-lucide="scan-face"></i>Un visage a été flouté</span></div></div><h3>Visages floutés automatiquement</h3></div>
+    <div class="atout"><div class="visuel v-rayon"><div class="reglages"><small style="color:var(--app-discret)">Rayon d'alerte</small><div class="valeur"><span class="rond">−</span><b class="tab">500 m</b><span class="rond">+</span></div><div class="ligne"><span>Autour de moi</span><span class="interrupteur"></span></div><div class="ligne"><span>Autour de chez moi</span><span class="interrupteur"></span></div></div></div><h3>Votre rayon, de 100 m à 3 km</h3></div>
+    <div class="atout"><div class="visuel v-question"><div class="scene-q"><div style="position:relative"><div class="pin"></div><span class="pq">!?</span></div><div class="question"><small style="color:var(--app-discret)">Avez-vous vu quelque chose ?</small>Porte forcée vers 14 h rue des Martyrs. Si vous avez vu quelque chose, dites-le-moi.</div></div></div><h3>Demander de l'aide aux voisins</h3></div>
+    <div class="atout"><div class="visuel v-police"><div class="carte-police"><div class="entete-p"><span class="bouclier"><i data-lucide="shield-check"></i></span>Transmettre aussi à la police<span class="interrupteur"></span></div><p>Votre signalement sera aussi transmis aux forces de l'ordre. Votre adresse et votre e-mail ne le sont pas.</p></div></div><h3>Transmettre à la police</h3></div>
+    <div class="atout"><div class="visuel v-moderation"><div class="feuille"><div class="action rouge"><i data-lucide="flag"></i>Signaler ce post</div><div class="action"><i data-lucide="user-x"></i>Bloquer cet utilisateur</div><div class="action"><i data-lucide="eye-off"></i>Masquer de ma carte</div></div></div><h3>Modéré par les voisins</h3></div>
+  </div>
+</section>
+
+<section class="temoins">
+  <svg class="fond" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#quartier" transform="translate(1600 0) scale(-1 1)"/></svg>
+  <div class="in">
+    <div class="texte">
+      <h2>Avez-vous vu quelque chose<span class="pq-titre">!?</span></h2>
+      <p>Après un signalement, demandez à vos voisins s'ils ont été témoins. Votre repère porte « !? » sur la carte, et ils peuvent vous répondre pendant une semaine.</p>
+    </div>
+    <div class="tel">
+      <div class="coque" data-discussion><div class="vitre"><div class="page" style="padding-bottom:14px">
+        <div class="titre"><span class="icone"><i data-lucide="hand-fist"></i></span><div><b style="font-size:14px">Agression à 250 m de chez vous</b><br><small style="color:var(--app-discret)">Boulevard de Clichy, il y a 5 min</small></div></div>
+        <div class="question"><small style="color:var(--app-discret)">!? Avez-vous vu quelque chose ?</small>On m'a arraché mon sac vers 22 h devant le métro Blanche. Si vous avez vu quelque chose, écrivez-moi.</div>
+        <div class="fil" data-fil aria-live="polite"></div>
+        <div class="saisie">Écrire un message…</div>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div>
+    <h2>Securicity, un service gratuit, respectueux de la confidentialité, simple, intuitif et paramétrable.</h2>
+    <p>Soyons tous vigilants : partageons les informations utiles à notre sécurité et signalons les dangers, risques, vols, agressions… gratuitement et en toute confidentialité. Soyons solidaires, et demandons de l'aide à nos voisins quand il le faut.</p>
+  </div>
+  <div class="telecharger">
+    <svg class="qr" viewBox="-2 -2 29 29" role="img" aria-label="QR code de téléchargement (factice)"><rect x="-2" y="-2" width="29" height="29" fill="#fff"/><path d="M0 0h1v1h-1zM1 0h1v1h-1zM2 0h1v1h-1zM3 0h1v1h-1zM4 0h1v1h-1zM5 0h1v1h-1zM6 0h1v1h-1zM8 0h1v1h-1zM9 0h1v1h-1zM10 0h1v1h-1zM11 0h1v1h-1zM12 0h1v1h-1zM14 0h1v1h-1zM15 0h1v1h-1zM18 0h1v1h-1zM19 0h1v1h-1zM20 0h1v1h-1zM21 0h1v1h-1zM22 0h1v1h-1zM23 0h1v1h-1zM24 0h1v1h-1zM0 1h1v1h-1zM6 1h1v1h-1zM8 1h1v1h-1zM9 1h1v1h-1zM10 1h1v1h-1zM12 1h1v1h-1zM13 1h1v1h-1zM15 1h1v1h-1zM16 1h1v1h-1zM18 1h1v1h-1zM24 1h1v1h-1zM0 2h1v1h-1zM2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM6 2h1v1h-1zM11 2h1v1h-1zM15 2h1v1h-1zM18 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM22 2h1v1h-1zM24 2h1v1h-1zM0 3h1v1h-1zM2 3h1v1h-1zM3 3h1v1h-1zM4 3h1v1h-1zM6 3h1v1h-1zM9 3h1v1h-1zM10 3h1v1h-1zM11 3h1v1h-1zM13 3h1v1h-1zM14 3h1v1h-1zM18 3h1v1h-1zM20 3h1v1h-1zM21 3h1v1h-1zM22 3h1v1h-1zM24 3h1v1h-1zM0 4h1v1h-1zM2 4h1v1h-1zM3 4h1v1h-1zM4 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM15 4h1v1h-1zM18 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM0 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM9 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM16 5h1v1h-1zM18 5h1v1h-1zM24 5h1v1h-1zM0 6h1v1h-1zM1 6h1v1h-1zM2 6h1v1h-1zM3 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM12 6h1v1h-1zM13 6h1v1h-1zM14 6h1v1h-1zM18 6h1v1h-1zM19 6h1v1h-1zM20 6h1v1h-1zM21 6h1v1h-1zM22 6h1v1h-1zM23 6h1v1h-1zM24 6h1v1h-1zM10 7h1v1h-1zM14 7h1v1h-1zM15 7h1v1h-1zM16 7h1v1h-1zM0 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM8 8h1v1h-1zM11 8h1v1h-1zM12 8h1v1h-1zM15 8h1v1h-1zM16 8h1v1h-1zM17 8h1v1h-1zM20 8h1v1h-1zM24 8h1v1h-1zM1 9h1v1h-1zM2 9h1v1h-1zM7 9h1v1h-1zM10 9h1v1h-1zM11 9h1v1h-1zM12 9h1v1h-1zM13 9h1v1h-1zM15 9h1v1h-1zM16 9h1v1h-1zM17 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM23 9h1v1h-1zM3 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM6 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM12 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM19 10h1v1h-1zM0 11h1v1h-1zM5 11h1v1h-1zM7 11h1v1h-1zM12 11h1v1h-1zM16 11h1v1h-1zM17 11h1v1h-1zM18 11h1v1h-1zM19 11h1v1h-1zM20 11h1v1h-1zM21 11h1v1h-1zM0 12h1v1h-1zM3 12h1v1h-1zM6 12h1v1h-1zM8 12h1v1h-1zM12 12h1v1h-1zM13 12h1v1h-1zM15 12h1v1h-1zM16 12h1v1h-1zM17 12h1v1h-1zM19 12h1v1h-1zM21 12h1v1h-1zM22 12h1v1h-1zM23 12h1v1h-1zM1 13h1v1h-1zM5 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM9 13h1v1h-1zM10 13h1v1h-1zM11 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM19 13h1v1h-1zM20 13h1v1h-1zM22 13h1v1h-1zM23 13h1v1h-1zM2 14h1v1h-1zM4 14h1v1h-1zM6 14h1v1h-1zM7 14h1v1h-1zM10 14h1v1h-1zM11 14h1v1h-1zM13 14h1v1h-1zM14 14h1v1h-1zM15 14h1v1h-1zM16 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM21 14h1v1h-1zM23 14h1v1h-1zM24 14h1v1h-1zM0 15h1v1h-1zM1 15h1v1h-1zM2 15h1v1h-1zM5 15h1v1h-1zM6 15h1v1h-1zM8 15h1v1h-1zM10 15h1v1h-1zM13 15h1v1h-1zM17 15h1v1h-1zM21 15h1v1h-1zM22 15h1v1h-1zM23 15h1v1h-1zM24 15h1v1h-1zM0 16h1v1h-1zM2 16h1v1h-1zM3 16h1v1h-1zM4 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM10 16h1v1h-1zM11 16h1v1h-1zM12 16h1v1h-1zM13 16h1v1h-1zM14 16h1v1h-1zM18 16h1v1h-1zM20 16h1v1h-1zM21 16h1v1h-1zM22 16h1v1h-1zM23 16h1v1h-1zM24 16h1v1h-1zM8 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM17 17h1v1h-1zM18 17h1v1h-1zM20 17h1v1h-1zM23 17h1v1h-1zM0 18h1v1h-1zM1 18h1v1h-1zM2 18h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM5 18h1v1h-1zM6 18h1v1h-1zM14 18h1v1h-1zM15 18h1v1h-1zM16 18h1v1h-1zM17 18h1v1h-1zM18 18h1v1h-1zM0 19h1v1h-1zM6 19h1v1h-1zM8 19h1v1h-1zM9 19h1v1h-1zM10 19h1v1h-1zM12 19h1v1h-1zM16 19h1v1h-1zM17 19h1v1h-1zM22 19h1v1h-1zM23 19h1v1h-1zM24 19h1v1h-1zM0 20h1v1h-1zM2 20h1v1h-1zM3 20h1v1h-1zM4 20h1v1h-1zM6 20h1v1h-1zM9 20h1v1h-1zM11 20h1v1h-1zM12 20h1v1h-1zM13 20h1v1h-1zM15 20h1v1h-1zM18 20h1v1h-1zM19 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM24 20h1v1h-1zM0 21h1v1h-1zM2 21h1v1h-1zM3 21h1v1h-1zM4 21h1v1h-1zM6 21h1v1h-1zM11 21h1v1h-1zM14 21h1v1h-1zM15 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM21 21h1v1h-1zM23 21h1v1h-1zM0 22h1v1h-1zM2 22h1v1h-1zM3 22h1v1h-1zM4 22h1v1h-1zM6 22h1v1h-1zM10 22h1v1h-1zM11 22h1v1h-1zM12 22h1v1h-1zM13 22h1v1h-1zM14 22h1v1h-1zM16 22h1v1h-1zM18 22h1v1h-1zM19 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM0 23h1v1h-1zM6 23h1v1h-1zM8 23h1v1h-1zM11 23h1v1h-1zM12 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM17 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM24 23h1v1h-1zM0 24h1v1h-1zM1 24h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM8 24h1v1h-1zM9 24h1v1h-1zM10 24h1v1h-1zM11 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM14 24h1v1h-1zM15 24h1v1h-1zM19 24h1v1h-1zM20 24h1v1h-1zM22 24h1v1h-1zM23 24h1v1h-1zM24 24h1v1h-1z" fill="#14233B"/></svg>
+    <div class="tel-texte">
+      <b>Téléchargez l'app maintenant</b>
+      <span>Scannez le code avec l'appareil photo de votre téléphone.</span>
+      <div class="stores"><a href="#" aria-label="Télécharger dans l'App Store">App Store</a><a href="#" aria-label="Disponible sur Google Play">Google Play</a></div>
+      <small>(faux code QR)</small>
+    </div>
+  </div>
 </section>
 
 <section class="slogan"><p><span class="marque-slogan"><i></i>Securicity,</span> votre quartier vous prévient.</p></section>
@@ -244,13 +356,11 @@ h1{font-size:clamp(2.6rem,6vw,5.2rem);line-height:.98;letter-spacing:-.035em;fon
 <script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>
 <script>
 {
-const etapes = [
-  ['La carte de votre quartier', 'Chaque repère est le signalement d’un voisin. Touchez-le pour savoir ce qui s’est passé.'],
-  ['Signaler en quelques secondes', 'Maintenez le repère, placez-le, dites ce qui s’est passé. Publié, et transmis à la police.'],
-  ['Avez-vous vu quelque chose ?', 'Demandez à vos voisins. Ils peuvent vous répondre pendant une semaine.'],
-  ['Prévenu au bon moment', 'Une alerte dès qu’un incident arrive dans votre rayon, autour de vous ou de chez vous.'],
-];
-const DUREE = 3500; // temps passé sur chaque écran
+const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ---------- Téléphone de l'accueil : quatre écrans qui défilent ----------
+const titres = ['La carte de votre quartier', 'Signaler en quelques secondes', 'Avez-vous vu quelque chose ?', 'Prévenu au bon moment'];
+const DUREE = 3500;
 const carte = '<svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg>';
 const onglets = '<div class="onglets"><span class="on">Carte</span><span>Mes posts</span><span class="plus">+</span><span>Alertes</span><span>Profil</span></div>';
 const ecrans = [
@@ -268,38 +378,31 @@ const ecrans = [
    <div class="msg"><small>Voisine_Martyrs</small>Un scooter noir était garé devant le 14 vers 13 h 50.</div>
    <div class="msg moi"><small>Vous</small>Merci, vous avez vu la plaque ?</div></div>`,
   `<div class="page" style="background:linear-gradient(180deg,#DCE3EC,#F6F7F9 45%)">
-   <div class="notif-mini"><small style="color:var(--app-discret)">Securicity, maintenant</small><b>Vol de vélo à 250 m de chez vous</b><span>Place Pigalle. Touchez pour voir.</span></div>
+   <div class="notif-mini"><small style="color:var(--app-discret)">Securicity, maintenant</small><b>Agression à 250 m de chez vous</b><span>Boulevard de Clichy. Touchez pour voir.</span></div>
    <h4 style="margin-top:10px">Alertes</h4>
    <div class="liste">
-     <div class="alerte"><span class="icone"><i data-lucide="bike"></i></span><div><b>Vol de vélo à 250 m</b><small>Place Pigalle, 21 h 42</small></div><span class="lu"></span></div>
+     <div class="alerte"><span class="icone"><i data-lucide="hand-fist"></i></span><div><b>Agression à 250 m</b><small>Boulevard de Clichy, 22 h 08</small></div><span class="lu"></span></div>
      <div class="alerte"><span class="icone"><i data-lucide="house"></i></span><div><b>Cambriolage à 180 m</b><small>Rue des Martyrs, 14 h 10</small></div><span class="lu"></span></div>
-     <div class="alerte"><span class="icone"><i data-lucide="spray-can"></i></span><div><b style="font-weight:500">Tag à 90 m</b><small>Rue Lepic, 18 h 05</small></div></div>
+     <div class="alerte"><span class="icone"><i data-lucide="bike"></i></span><div><b style="font-weight:500">Vol de vélo à 90 m</b><small>Place Pigalle, 18 h 03</small></div></div>
      <div class="alerte"><span class="icone"><i data-lucide="megaphone"></i></span><div><b style="font-weight:500">Nuisances sonores à 300 m</b><small>Rue Blanche, hier</small></div></div>
    </div></div>`,
 ];
-
 const hote = document.querySelector('[data-tel]');
-const legende = document.querySelector('[data-legende]');
 hote.className = 'tel';
 hote.innerHTML = `<button type="button" class="coque" aria-label="Écran suivant de l'app"><div class="vitre"><div class="piste">${ecrans.map((e) => `<div class="ecran" aria-hidden="true">${e}</div>`).join('')}</div></div></button>
-  <div class="points">${etapes.map((e, n) => `<button type="button" aria-label="Écran ${n + 1} sur 4 : ${e[0]}"><span></span></button>`).join('')}</div>`;
+  <div class="points">${titres.map((t, n) => `<button type="button" aria-label="Écran ${n + 1} sur 4 : ${t}"><span></span></button>`).join('')}</div>`;
 const piste = hote.querySelector('.piste');
 const points = [...hote.querySelectorAll('.points button')];
-
-// Repères rouges de la carte de fond : chacun ouvre un écran du téléphone.
-// Positions en % de la zone à droite du téléphone, du haut vers le bas : un repère par écran.
 const placesReperes = [[30, 6], [64, 30], [24, 54], [60, 78]];
 const zoneReperes = document.querySelector('[data-reperes]');
-zoneReperes.innerHTML = placesReperes.map(([x, y], n) => `<button type="button" class="repere" style="left:${x}%;top:${y}%" aria-label="${etapes[n][0]}"><i></i><b>${etapes[n][0]}</b></button>`).join('');
+zoneReperes.innerHTML = placesReperes.map(([x, y], n) => `<button type="button" class="repere" style="left:${x}%;top:${y}%" aria-label="${titres[n]}"><i></i><b>${titres[n]}</b></button>`).join('');
 const reperes = [...zoneReperes.children];
-
 let index = 0, minuteur, enPause = false;
 function aller(n) {
-  index = (n + etapes.length) % etapes.length;
+  index = (n + titres.length) % titres.length;
   piste.style.transform = `translateX(-${index * 100}%)`;
   points.forEach((p, k) => p.setAttribute('aria-current', String(k === index)));
   reperes.forEach((r, k) => r.classList.toggle('actif', k === index));
-  legende.innerHTML = `<b>${etapes[index][0]}</b><span>${etapes[index][1]}</span>`;
   relancer();
 }
 function relancer() {
@@ -309,10 +412,56 @@ function relancer() {
 hote.querySelector('.coque').onclick = () => aller(index + 1);
 points.forEach((p, n) => (p.onclick = () => aller(n)));
 reperes.forEach((r, n) => (r.onclick = () => aller(n)));
-// Pause quand la souris est sur le téléphone, ou quand l'onglet n'est pas visible.
 hote.addEventListener('mouseenter', () => { enPause = true; clearTimeout(minuteur); });
 hote.addEventListener('mouseleave', () => { enPause = false; relancer(); });
 document.addEventListener('visibilitychange', () => { enPause = document.hidden; relancer(); });
+
+// ---------- Alertes : une de plus à chaque palier de défilement ----------
+const sectionAlertes = document.querySelector('[data-alertes]');
+const notifs = [...sectionAlertes.querySelectorAll('.notif')];
+function suivreDefilement() {
+  const r = sectionAlertes.getBoundingClientRect();
+  const parcours = Math.max(1, r.height - innerHeight);
+  const p = Math.min(1, Math.max(0, -r.top / parcours));
+  notifs.forEach((n, k) => n.classList.toggle('vue', p > 0.08 + k * 0.26));
+}
+if (calme) notifs.forEach((n) => n.classList.add('vue'));
+else { addEventListener('scroll', suivreDefilement, { passive: true }); suivreDefilement(); }
+
+// ---------- Carrousel : la série est dupliquée pour boucler sans saut ----------
+const defile = document.querySelector('[data-defile]');
+defile.insertAdjacentHTML('beforeend', [...defile.children].map((c) => c.outerHTML.replace('class="atout"', 'class="atout" aria-hidden="true"')).join(''));
+
+// ---------- Discussion : les réponses arrivent une à une quand le téléphone est visible ----------
+const reponses = [
+  ['Voisine_Blanche', 'J’ai entendu crier vers 22 h. Deux personnes sont parties en courant vers Pigalle.'],
+  ['Marc_9e', 'Le tabac au coin a une caméra qui donne sur le trottoir, demandez-leur.'],
+  ['Vous', 'Merci beaucoup, je vais porter plainte demain matin.'],
+  ['Lea_Clichy', 'J’étais à l’arrêt de bus juste en face. Je peux témoigner si besoin.'],
+];
+const fil = document.querySelector('[data-fil]');
+const bulle = ([qui, texte]) => `<div class="msg${qui === 'Vous' ? ' moi' : ''}"><small>${qui}</small>${texte}</div>`;
+async function raconter() {
+  const attendre = (ms) => new Promise((ok) => setTimeout(ok, ms));
+  for (const r of reponses) {
+    const ecrit = document.createElement('div');
+    ecrit.className = 'ecrit';
+    ecrit.innerHTML = '<i></i><i></i><i></i>';
+    if (r[0] !== 'Vous') { fil.append(ecrit); await attendre(30); ecrit.classList.add('vue'); await attendre(1100); ecrit.remove(); }
+    else await attendre(700);
+    fil.insertAdjacentHTML('beforeend', bulle(r));
+    const m = fil.lastElementChild;
+    // Comme dans une vraie discussion : les plus anciens messages sortent par le haut, jamais coupés.
+    while (fil.scrollHeight > fil.clientHeight && fil.children.length > 1) fil.firstElementChild.remove();
+    await attendre(30);
+    m.classList.add('vue');
+    await attendre(900);
+  }
+}
+if (calme) { fil.innerHTML = reponses.map(bulle).join(''); fil.querySelectorAll('.msg').forEach((m) => m.classList.add('vue')); }
+else new IntersectionObserver((entrees, obs) => {
+  if (entrees[0].isIntersecting) { obs.disconnect(); raconter(); }
+}, { threshold: 0.55 }).observe(document.querySelector('[data-discussion]'));
 
 try { lucide.createIcons(); } catch (e) {}
 aller(0);
