@@ -7,3 +7,6 @@ Thumbs.db
 
 # Réglages Claude Code (local)
 .claude/
+
+# Photo de presse sous droits (AP/SIPA) : jamais publiée sans licence
+images/pillage-vitrine*
