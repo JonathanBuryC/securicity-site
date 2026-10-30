@@ -133,16 +133,13 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-carte .rayon{width:190px;height:190px}
 .v-carte .maison{width:30px;height:30px}.v-carte .maison svg{width:16px;height:16px}
 .v-carte .pin{width:24px;height:24px;border-width:3px}
-.v-repere{background:linear-gradient(165deg,#2A55D1,#1B3FA8 55%,#14307F)}
-.v-repere .bulle{position:absolute;top:44px;left:28px;right:28px;font-size:14px;font-weight:600}
-.v-repere .pin.gros{position:static;width:64px;height:64px;border-width:5px;border-color:#000;box-shadow:0 14px 26px rgba(0,0,0,.35)}
-.v-repere .ombre{position:absolute;left:calc(50% - 16px);top:calc(50% + 46px);width:32px;height:10px}
-.v-photo{background:linear-gradient(160deg,#E9ECF1,#CDD4DF)}
-.v-photo .cadre{width:100%;background:#fff;border-radius:18px;padding:12px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:10px}
-.v-photo .photo{height:180px;border-radius:12px}
-.v-photo .photo::after{filter:blur(9px);width:36px;height:42px}
-.puce{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:rgba(27,63,168,.1);color:var(--bleu);font-weight:700;border-radius:99px;padding:5px 11px}
-.puce svg{width:14px;height:14px}
+.v-photo{padding:0;background:#C9CED6}
+.v-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+/* Cadre de détection posé sur le visage flouté, comme dans l'aperçu de l'app */
+.v-photo .detection{position:absolute;left:49.4%;top:41.5%;width:31%;aspect-ratio:.8;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.v-photo .puce{position:absolute;left:20px;bottom:20px;background:rgba(255,255,255,.94);box-shadow:0 6px 18px -6px rgba(20,35,59,.45)}
+.puce{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:rgba(27,63,168,.1);color:var(--bleu);font-weight:700;border-radius:99px;padding:6px 12px}
+.puce svg{width:15px;height:15px}
 .v-rayon{background:#DCE6F7}
 .v-rayon .reglages{width:100%;background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:12px}
 .v-rayon .valeur{display:flex;align-items:center;justify-content:space-between}
@@ -151,24 +148,48 @@ h1 em{font-style:normal;color:var(--bleu)}
 .ligne{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--app-bordure)}
 .interrupteur{width:40px;height:24px;border-radius:99px;background:#34C759;position:relative;flex:none}
 .interrupteur::after{content:"";position:absolute;right:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
-.v-question{background:#FBE4DF}
-.v-question .scene-q{display:flex;flex-direction:column;align-items:center;gap:22px;width:100%}
-.v-question .pin{position:relative;width:54px;height:54px;border-width:4px;box-shadow:0 10px 20px rgba(0,0,0,.2)}
-.v-question .pq{position:absolute;margin:0;left:calc(50% + 14px);top:-6px;font-size:13px;line-height:19px;padding:0 6px;border-width:2px}
-.v-question .question{background:#fff;width:100%;padding:12px 14px;border-radius:14px;box-shadow:0 12px 28px -16px rgba(20,35,59,.45)}
-.v-police{background:var(--police)}
-.v-police .carte-police{width:100%;border-radius:18px;padding:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;display:flex;flex-direction:column;gap:10px}
-.v-police .entete-p{display:flex;align-items:center;gap:12px;font-weight:700;font-size:15px}
-.v-police .bouclier{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
-.v-police .bouclier svg{width:22px;height:22px}
-.v-police .interrupteur{background:#4C6FD1;margin-left:auto}
-.v-police p{margin:0;color:#DCE4F7;font-size:12.5px}
-.v-moderation{background:var(--parc)}
-.v-moderation .feuille{width:100%;background:#fff;border-radius:18px;padding:6px 16px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45)}
-.v-moderation .action{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--app-bordure);font-weight:600;font-size:14px}
-.v-moderation .action:first-child{border-top:0}
-.v-moderation .action svg{width:20px;height:20px;color:var(--app-discret)}
-.v-moderation .action.rouge,.v-moderation .action.rouge svg{color:#C23824}
+.v-chat{background:#FBE4DF;padding:22px}
+.v-chat .fenetre{width:100%;background:#fff;border-radius:20px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);overflow:hidden;display:flex;flex-direction:column}
+.v-chat .barre{display:flex;align-items:center;gap:10px;padding:12px 14px;border-bottom:1px solid var(--app-bordure)}
+.v-chat .barre b{font-size:13px;line-height:1.2}.v-chat .barre small{color:var(--app-discret);font-size:11px}
+.v-chat .mini-pin{width:16px;height:16px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:var(--rouge);flex:none;margin:0 4px}
+.v-chat .echanges{padding:12px;display:flex;flex-direction:column;gap:8px}
+.v-chat .ligne-msg{display:flex;align-items:flex-end;gap:7px}
+.v-chat .ligne-msg.moi{justify-content:flex-end}
+.v-chat .avatar{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:800;color:#fff;flex:none}
+.v-chat .b{max-width:78%;padding:7px 10px;border-radius:14px 14px 14px 4px;background:var(--app-fond);font-size:12px;line-height:1.35}
+.v-chat .moi .b{border-radius:14px 14px 4px 14px;background:var(--bleu);color:#fff}
+.v-chat .envoi{display:flex;align-items:center;gap:8px;margin:0 12px 12px;padding:6px 6px 6px 12px;border:1px solid var(--app-bordure);border-radius:99px;color:var(--app-discret);font-size:12px}
+.v-chat .envoi span{margin-left:auto;width:26px;height:26px;border-radius:50%;background:var(--bleu);display:grid;place-items:center;color:#fff}
+.v-chat .envoi svg{width:14px;height:14px}
+.v-verrou{background:linear-gradient(170deg,#24407F 0%,#14233B 55%,#0B1424 100%);color:#fff;place-items:start center;padding:46px 22px}
+.v-verrou .heure{text-align:center;width:100%}
+.v-verrou .heure small{display:block;font-size:14px;opacity:.85;font-weight:600}
+.v-verrou .heure b{display:block;font-size:76px;line-height:1;font-weight:700;letter-spacing:-.03em;margin-top:2px}
+.v-verrou .banniere{position:absolute;left:18px;right:18px;bottom:34px;background:rgba(255,255,255,.9);color:var(--app-texte);border-radius:20px;padding:12px 14px;display:grid;grid-template-columns:auto 1fr;gap:1px 10px;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
+.v-verrou .banniere .app{grid-row:span 3;width:36px;height:36px;border-radius:9px;background:var(--bleu);display:grid;place-items:center}
+.v-verrou .banniere .app i{width:14px;height:14px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:#fff}
+.v-verrou .banniere small{font-size:11px;color:var(--app-discret);display:flex;justify-content:space-between}
+.v-verrou .banniere b{font-size:14px;line-height:1.25}
+.v-verrou .banniere .texte-b{font-size:12px;color:var(--app-discret)}
+.v-types{background:#EEF2FA;padding:24px}
+.v-types .nuage{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.v-types .type{display:inline-flex;align-items:center;gap:7px;background:#fff;border-radius:99px;padding:6px 12px 6px 6px;font-weight:600;font-size:13px;box-shadow:0 2px 6px -2px rgba(20,35,59,.25)}
+.v-types .type span{width:26px;height:26px;border-radius:8px;background:rgba(224,69,47,.12);color:var(--rouge);display:grid;place-items:center}
+.v-types .type svg{width:15px;height:15px}
+.v-types .type.choisi{outline:2px solid var(--bleu);background:#F1F4FC}
+.v-theme{background:linear-gradient(135deg,#E3E8EF 0 50%,#0E1A2B 50% 100%)}
+.v-theme .mini{position:absolute;width:150px;height:300px;border-radius:26px;padding:6px;background:#070D17;box-shadow:0 20px 40px -16px rgba(7,13,23,.6)}
+.v-theme .mini .ec{position:relative;width:100%;height:100%;border-radius:21px;overflow:hidden}
+.v-theme .mini.clair{left:30px;top:30px;transform:rotate(-6deg)}
+.v-theme .mini.sombre{right:30px;bottom:26px;transform:rotate(6deg)}
+.v-theme .sombre .ec{--sol:#13233A;--rue:#21354F;--eau:#0A1422;--parc:#143029}
+.v-theme .mini .pin{width:14px;height:14px}
+.v-theme .mini .rayon{width:84px;height:84px}
+.v-theme .sombre .rayon{border-color:#7DBEFF;background:rgba(125,190,255,.12)}
+.v-theme .mini .maison{width:18px;height:18px}
+.v-theme .mini .maison svg{width:10px;height:10px}
+.v-theme .sombre .maison{background:#18283D;border-color:#7DBEFF;color:#7DBEFF}
 
 /* ---------- Avez-vous vu quelque chose ? ---------- */
 .temoins{position:relative;overflow:hidden;background:var(--sol)}
@@ -295,12 +316,12 @@ h1 em{font-style:normal;color:var(--bleu)}
   <h2>Tout votre quartier, dans une app.</h2>
   <div class="defile" data-defile>
     <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
-    <div class="atout"><div class="visuel v-repere"><div class="bulle">Maintenez le repère pour le déplacer</div><div class="pin gros"></div><div class="ombre"></div></div><h3>Signaler en quelques secondes</h3></div>
-    <div class="atout"><div class="visuel v-photo"><div class="cadre"><div class="photo"></div><span class="puce"><i data-lucide="scan-face"></i>Un visage a été flouté</span></div></div><h3>Visages floutés automatiquement</h3></div>
+    <div class="atout"><div class="visuel v-verrou"><div class="heure"><small>jeudi 30 octobre</small><b class="tab">22:08</b></div><div class="banniere"><span class="app"><i></i></span><small><span>SECURICITY</span><span>maintenant</span></small><b>Agression à 250 m de chez vous</b><span class="texte-b">Boulevard de Clichy. Touchez pour voir.</span></div></div><h3>L'alerte, même téléphone verrouillé</h3></div>
+    <div class="atout"><div class="visuel v-photo"><img src="/images/visage-floute.jpg" alt="Une passante sur un passage piéton, son visage flouté par l'application" loading="lazy" width="680" height="800"><span class="detection" aria-hidden="true"></span><span class="puce"><i data-lucide="scan-face"></i>Un visage a été flouté</span></div><h3>Visages floutés automatiquement</h3></div>
+    <div class="atout"><div class="visuel v-chat"><div class="fenetre"><div class="barre"><span class="mini-pin"></span><div><b>Cambriolage rue des Martyrs</b><br><small>Avez-vous vu quelque chose ?</small></div></div><div class="echanges"><div class="ligne-msg moi"><div class="b">Porte forcée vers 14 h au n° 14. Quelqu'un a vu quelque chose ?</div></div><div class="ligne-msg"><span class="avatar" style="background:#2E9E5B">V</span><div class="b">Un scooter noir était garé devant vers 13 h 50.</div></div><div class="ligne-msg"><span class="avatar" style="background:#C2611A">M</span><div class="b">Je l'ai vu aussi, il est parti vers Pigalle.</div></div></div><div class="envoi">Répondre…<span><i data-lucide="send"></i></span></div></div></div><h3>Vos voisins vous répondent</h3></div>
     <div class="atout"><div class="visuel v-rayon"><div class="reglages"><small style="color:var(--app-discret)">Rayon d'alerte</small><div class="valeur"><span class="rond">−</span><b class="tab">500 m</b><span class="rond">+</span></div><div class="ligne"><span>Autour de moi</span><span class="interrupteur"></span></div><div class="ligne"><span>Autour de chez moi</span><span class="interrupteur"></span></div></div></div><h3>Votre rayon, de 100 m à 3 km</h3></div>
-    <div class="atout"><div class="visuel v-question"><div class="scene-q"><div style="position:relative"><div class="pin"></div><span class="pq">!?</span></div><div class="question"><small style="color:var(--app-discret)">Avez-vous vu quelque chose ?</small>Porte forcée vers 14 h rue des Martyrs. Si vous avez vu quelque chose, dites-le-moi.</div></div></div><h3>Demander de l'aide aux voisins</h3></div>
-    <div class="atout"><div class="visuel v-police"><div class="carte-police"><div class="entete-p"><span class="bouclier"><i data-lucide="shield-check"></i></span>Transmettre aussi à la police<span class="interrupteur"></span></div><p>Votre signalement sera aussi transmis aux forces de l'ordre. Votre adresse et votre e-mail ne le sont pas.</p></div></div><h3>Transmettre à la police</h3></div>
-    <div class="atout"><div class="visuel v-moderation"><div class="feuille"><div class="action rouge"><i data-lucide="flag"></i>Signaler ce post</div><div class="action"><i data-lucide="user-x"></i>Bloquer cet utilisateur</div><div class="action"><i data-lucide="eye-off"></i>Masquer de ma carte</div></div></div><h3>Modéré par les voisins</h3></div>
+    <div class="atout"><div class="visuel v-types"><div class="nuage"><span class="type"><span><i data-lucide="spray-can"></i></span>Tag</span><span class="type"><span><i data-lucide="package-x"></i></span>Dépôt sauvage</span><span class="type"><span><i data-lucide="megaphone"></i></span>Nuisances sonores</span><span class="type choisi"><span><i data-lucide="bike"></i></span>Vol de vélo</span><span class="type"><span><i data-lucide="house"></i></span>Cambriolage</span><span class="type"><span><i data-lucide="car"></i></span>Stationnement gênant</span><span class="type"><span><i data-lucide="hand-fist"></i></span>Agression</span><span class="type"><span><i data-lucide="motorbike"></i></span>Vol de scooter</span><span class="type"><span><i data-lucide="speech"></i></span>Harcèlement de rue</span><span class="type"><span><i data-lucide="bomb"></i></span>Vandalisme</span><span class="type"><span><i data-lucide="footprints"></i></span>Rôdeur</span></div></div><h3>17 types d'incivilités</h3></div>
+    <div class="atout"><div class="visuel v-theme"><div class="mini clair"><div class="ec"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:30%"></div><div class="pin" style="left:66%;top:56%"></div></div></div><div class="mini sombre"><div class="ec"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:30%"></div><div class="pin" style="left:66%;top:56%"></div></div></div></div><h3>Clair ou sombre, à votre goût</h3></div>
   </div>
 </section>
 
