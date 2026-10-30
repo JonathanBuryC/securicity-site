@@ -136,8 +136,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-carte .pin{width:24px;height:24px;border-width:3px}
 .v-photo{padding:0;background:#C9CED6}
 .v-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-/* Cadre de détection posé sur le visage flouté, comme dans l'aperçu de l'app */
-.v-photo .detection{position:absolute;left:49.4%;top:41.5%;width:31%;aspect-ratio:.8;transform:translate(-50%,-50%);border:2px solid rgba(255,255,255,.9);border-radius:22px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
 .v-photo .puce{position:absolute;left:20px;bottom:20px;background:rgba(255,255,255,.94);box-shadow:0 6px 18px -6px rgba(20,35,59,.45)}
 .puce{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:rgba(27,63,168,.1);color:var(--bleu);font-weight:700;border-radius:99px;padding:6px 12px}
 .puce svg{width:15px;height:15px}
@@ -179,18 +177,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-types .type span{width:26px;height:26px;border-radius:8px;background:rgba(224,69,47,.12);color:var(--rouge);display:grid;place-items:center}
 .v-types .type svg{width:15px;height:15px}
 .v-types .type.choisi{outline:2px solid var(--bleu);background:#F1F4FC}
-.v-theme{background:linear-gradient(135deg,#E3E8EF 0 50%,#0E1A2B 50% 100%)}
-.v-theme .mini{position:absolute;width:150px;height:300px;border-radius:26px;padding:6px;background:#070D17;box-shadow:0 20px 40px -16px rgba(7,13,23,.6)}
-.v-theme .mini .ec{position:relative;width:100%;height:100%;border-radius:21px;overflow:hidden}
-.v-theme .mini.clair{left:30px;top:30px;transform:rotate(-6deg)}
-.v-theme .mini.sombre{right:30px;bottom:26px;transform:rotate(6deg)}
-.v-theme .sombre .ec{--sol:#13233A;--rue:#21354F;--eau:#0A1422;--parc:#143029}
-.v-theme .mini .pin{width:14px;height:14px}
-.v-theme .mini .rayon{width:84px;height:84px}
-.v-theme .sombre .rayon{border-color:#7DBEFF;background:rgba(125,190,255,.12)}
-.v-theme .mini .maison{width:18px;height:18px}
-.v-theme .mini .maison svg{width:10px;height:10px}
-.v-theme .sombre .maison{background:#18283D;border-color:#7DBEFF;color:#7DBEFF}
 
 /* ---------- Avez-vous vu quelque chose ? ---------- */
 .temoins{position:relative;overflow:hidden;background:var(--sol)}
@@ -295,7 +281,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 
 <section class="accueil">
   <svg class="fond" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#quartier"/></svg>
-  <div class="zone" aria-hidden="true"><span>500 m</span></div>
+  <div class="zone" aria-hidden="true"><span>1 km</span></div>
   <div class="chez" aria-hidden="true"><i data-lucide="map-pin-house"></i></div>
 
   <header class="entete"><a class="marque" href="/" aria-label="Securicity, accueil"><img class="icone-app" src="/images/icone.svg" alt="" width="44" height="44">Securicity</a><a class="presse" href="#pied">Presse</a></header>
@@ -321,11 +307,10 @@ h1 em{font-style:normal;color:var(--bleu)}
   <div class="defile" data-defile>
     <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
     <div class="atout"><div class="visuel v-verrou"><div class="heure"><small>jeudi 30 octobre</small><b class="tab">22:08</b></div><div class="banniere"><span class="app"><i></i></span><small><span>SECURICITY</span><span>maintenant</span></small><b>Agression à 250 m de chez vous</b><span class="texte-b">Boulevard de Clichy. Touchez pour voir.</span></div></div><h3>L'alerte, même téléphone verrouillé</h3></div>
-    <div class="atout"><div class="visuel v-photo"><img src="/images/visage-floute.jpg" alt="Une passante sur un passage piéton, son visage flouté par l'application" loading="lazy" width="680" height="800"><span class="detection" aria-hidden="true"></span><span class="puce"><i data-lucide="scan-face"></i>Un visage a été flouté</span></div><h3>Visages floutés automatiquement</h3></div>
+    <div class="atout"><div class="visuel v-photo"><img src="/images/incivilite-tags.jpg" alt="Une porte de local technique couverte de tags" loading="lazy" width="680" height="800"><span class="puce"><i data-lucide="camera"></i>Photo jointe au signalement</span></div><h3>Photographiez ce que vous voyez</h3></div>
     <div class="atout"><div class="visuel v-chat"><div class="fenetre"><div class="barre"><span class="mini-pin"></span><div><b>Cambriolage rue des Martyrs</b><br><small>Avez-vous vu quelque chose ?</small></div></div><div class="echanges"><div class="ligne-msg moi"><div class="b">Porte forcée vers 14 h au n° 14. Quelqu'un a vu quelque chose ?</div></div><div class="ligne-msg"><span class="avatar" style="background:#2E9E5B">V</span><div class="b">Un scooter noir était garé devant vers 13 h 50.</div></div><div class="ligne-msg"><span class="avatar" style="background:#C2611A">M</span><div class="b">Je l'ai vu aussi, il est parti vers Pigalle.</div></div></div><div class="envoi">Répondre…<span><i data-lucide="send"></i></span></div></div></div><h3>Vos voisins vous répondent</h3></div>
-    <div class="atout"><div class="visuel v-rayon"><div class="reglages"><small style="color:var(--app-discret)">Rayon d'alerte</small><div class="valeur"><span class="rond">−</span><b class="tab">500 m</b><span class="rond">+</span></div><div class="ligne"><span>Autour de moi</span><span class="interrupteur"></span></div><div class="ligne"><span>Autour de chez moi</span><span class="interrupteur"></span></div></div></div><h3>Votre rayon, de 100 m à 3 km</h3></div>
+    <div class="atout"><div class="visuel v-rayon"><div class="reglages"><small style="color:var(--app-discret)">Rayon d'alerte</small><div class="valeur"><span class="rond">−</span><b class="tab">1 km</b><span class="rond">+</span></div><div class="ligne"><span>Autour de moi</span><span class="interrupteur"></span></div><div class="ligne"><span>Autour de chez moi</span><span class="interrupteur"></span></div></div></div><h3>Votre rayon, de 1 à 3 km</h3></div>
     <div class="atout"><div class="visuel v-types"><div class="nuage"><span class="type"><span><i data-lucide="spray-can"></i></span>Tag</span><span class="type"><span><i data-lucide="package-x"></i></span>Dépôt sauvage</span><span class="type"><span><i data-lucide="megaphone"></i></span>Nuisances sonores</span><span class="type choisi"><span><i data-lucide="bike"></i></span>Vol de vélo</span><span class="type"><span><i data-lucide="house"></i></span>Cambriolage</span><span class="type"><span><i data-lucide="car"></i></span>Stationnement gênant</span><span class="type"><span><i data-lucide="hand-fist"></i></span>Agression</span><span class="type"><span><i data-lucide="motorbike"></i></span>Vol de scooter</span><span class="type"><span><i data-lucide="speech"></i></span>Harcèlement de rue</span><span class="type"><span><i data-lucide="bomb"></i></span>Vandalisme</span><span class="type"><span><i data-lucide="footprints"></i></span>Rôdeur</span></div></div><h3>17 types d'incivilités</h3></div>
-    <div class="atout"><div class="visuel v-theme"><div class="mini clair"><div class="ec"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:30%"></div><div class="pin" style="left:66%;top:56%"></div></div></div><div class="mini sombre"><div class="ec"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:30%"></div><div class="pin" style="left:66%;top:56%"></div></div></div></div><h3>Clair ou sombre, à votre goût</h3></div>
   </div>
 </section>
 
