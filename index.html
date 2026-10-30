@@ -222,10 +222,15 @@ h1 em{font-style:normal;color:var(--bleu)}
 
 @media (max-width:960px){
   .scene{grid-template-columns:1fr;padding-bottom:56px}
-  .colonne-tel{padding-right:0}
-  /* Sur petit écran, les alertes n'occupent pas de place : elles arrivent par-dessus le téléphone. */
+  /* Sur petit écran : téléphone poussé à droite, alertes réduites (titre et heure) en cascade à gauche,
+     elles ne mordent que sur le bord du téléphone. */
+  .colonne-tel{padding-right:0;align-items:flex-end}
   .gauche{position:relative;z-index:4}
-  .pile{margin-bottom:-330px}
+  .pile{height:230px;margin:32px 0 -230px}
+  .notif{width:min(62%,320px);padding:10px 12px;border-radius:18px;gap:1px 10px}
+  .notif .ico{width:32px;height:32px;border-radius:9px}.notif .ico i{width:12px;height:12px}
+  .notif b{font-size:.88rem;line-height:1.25}.notif span{display:none}.notif small{font-size:.72rem}
+  .notif:nth-child(2){top:74px;left:10px}.notif:nth-child(3){top:148px;left:20px}
   .reperes{display:none}
   .accueil::before{background:linear-gradient(180deg,rgba(246,247,249,.96) 0%,rgba(246,247,249,.85) 30%,rgba(246,247,249,.4) 60%,rgba(246,247,249,.2) 100%)}
   .zone{left:50%;top:68%;width:90vw}
@@ -236,12 +241,9 @@ h1 em{font-style:normal;color:var(--bleu)}
 @media (max-width:520px){
   .marque{font-size:26px;gap:12px}
   .marque .icone-app{width:52px;height:52px}
-  .coque{width:248px;height:510px}
-  .notif{padding:14px 16px;border-radius:22px}
-  .pile{height:360px;margin-bottom:-360px}
-  .notif{width:calc(100% - 28px);gap:2px 12px}.notif .ico{width:40px;height:40px}
-  .notif b{font-size:1rem}.notif span{font-size:.85rem}
-  .notif:nth-child(2){left:14px;top:128px}.notif:nth-child(3){left:28px;top:250px}
+  .coque{width:224px;height:462px}
+  .notif{width:60%;padding:8px 10px}.notif b{font-size:.8rem}.notif .ico{width:28px;height:28px}
+  .notif:nth-child(2){top:64px}.notif:nth-child(3){top:128px}
   .atout{width:280px}.visuel{height:340px}
   .telecharger{flex-direction:column;align-items:flex-start}
   .temoins .texte{padding:24px}
