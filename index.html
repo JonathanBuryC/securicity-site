@@ -61,7 +61,10 @@ button.coque{cursor:pointer}
 .bouton{background:var(--bleu);color:#fff;border-radius:10px;padding:11px;text-align:center;font-weight:700;font-size:12px}
 .onglets{display:flex;justify-content:space-between;align-items:center;background:var(--app-surface);border-radius:18px;padding:6px 12px;font-size:9.5px;color:var(--app-discret);box-shadow:0 1px 3px rgba(20,35,59,.18)}
 .onglets .on{color:var(--bleu);font-weight:700}
-.onglets .plus{width:36px;height:36px;border-radius:50%;background:var(--bleu);color:#fff;font-size:21px;line-height:34px;text-align:center}
+.onglets .signaler{display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--bleu);font-weight:700;font-size:8.5px}
+.onglets .plus{position:relative;width:30px;height:30px;border-radius:50%;background:var(--bleu);display:grid;place-items:center}
+.onglets .plus i{width:11px;height:11px;background:var(--rouge,#E0452F);border:1.5px solid #fff;border-radius:50% 50% 50% 0;transform:rotate(-45deg);margin-top:-3px}
+.onglets .plus b{position:absolute;right:-3px;bottom:-3px;width:13px;height:13px;border-radius:50%;background:#fff;border:1.2px solid var(--bleu);color:var(--bleu);font-size:10px;line-height:10px;text-align:center;font-weight:800}
 .page{position:absolute;inset:0;padding:40px 12px 12px;display:flex;flex-direction:column;gap:8px}
 .page h4{margin:0 0 2px;font-size:19px;font-weight:800}
 .photo{height:118px;border-radius:10px;position:relative;overflow:hidden;background:linear-gradient(160deg,#9BA7B8,#5D6B80 60%,#3E4A5C)}
@@ -378,7 +381,7 @@ const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const titres = ['La carte de votre quartier', 'Signaler en quelques secondes', 'Appel aux voisins', 'Prévenu au bon moment'];
 const DUREE = 3500;
 const carte = '<svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg>';
-const onglets = '<div class="onglets"><span class="on">Carte</span><span>Mes posts</span><span class="plus">+</span><span>Alertes</span><span>Profil</span></div>';
+const onglets = '<div class="onglets"><span class="on">Carte</span><span>Mes posts</span><span class="signaler"><span class="plus"><i></i><b>+</b></span>Signaler</span><span>Alertes</span><span>Profil</span></div>';
 const ecrans = [
   `${carte}<div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div>
    <div class="pin" style="left:22%;top:30%"></div><div class="pin" style="left:66%;top:37%"></div>
