@@ -125,9 +125,8 @@ h1 em{font-style:normal;color:var(--bleu)}
 /* ---------- Carrousel des fonctions ---------- */
 .atouts{background:var(--blanc);padding:96px 0 104px;overflow:hidden;border-top:1px solid var(--filet)}
 .atouts h2{max-width:1180px;margin:0 auto 48px;padding:0 24px}
-.defile{display:flex;gap:28px;width:max-content;animation:defile 60s linear infinite}
+.defile{display:flex;gap:28px;overflow-x:auto;scrollbar-width:none}.defile::-webkit-scrollbar{display:none}
 .atout{margin-left:28px}.defile .atout+.atout{margin-left:0}
-@keyframes defile{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .atout{width:340px;flex:none}
 .visuel{position:relative;height:400px;border-radius:30px;overflow:hidden;display:grid;place-items:center;padding:28px;font:500 13px/1.4 "Public Sans",sans-serif;color:var(--app-texte)}
 .atout h3{font-size:1.65rem;line-height:1.1;letter-spacing:-.02em;margin:22px 4px 0;font-weight:800}
@@ -252,7 +251,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   .notif{width:60%;padding:8px 10px}.notif b{font-size:.8rem}.notif .ico{width:28px;height:28px}
   .notif:nth-child(2){top:64px}.notif:nth-child(3){top:128px}
   .atout{width:220px;margin-left:16px}.visuel{height:260px;padding:16px;border-radius:24px}.atout h3{font-size:1.2rem;margin-top:14px}
-  .defile{gap:16px;animation-duration:45s}
+  .defile{gap:16px}
   .v-verrou{padding:28px 12px}.v-verrou .heure b{font-size:52px}.v-verrou .heure small{font-size:12px}
   .v-verrou .banniere{left:10px;right:10px;bottom:14px;padding:9px 10px;border-radius:16px;gap:1px 8px}
   .v-verrou .banniere .app{width:28px;height:28px}.v-verrou .banniere b{font-size:12px}.v-verrou .banniere .texte-b,.v-verrou .banniere small{font-size:10px}
@@ -267,7 +266,6 @@ h1 em{font-style:normal;color:var(--bleu)}
   .piste,.points button span,.notif,.fil .msg{transition:none}
   .notif,.fil .msg{opacity:1;filter:none;transform:none}
   .notif:nth-child(2){transform:scale(.97)}.notif:nth-child(3){transform:scale(.94)}
-  .defile{animation:none;overflow-x:auto;width:auto}
   .defile [aria-hidden="true"]{display:none}
   .ecrit i{animation:none}
 }
@@ -445,6 +443,25 @@ else { addEventListener('scroll', suivreDefilement, { passive: true }); suivreDe
 // ---------- Carrousel : la série est dupliquée pour boucler sans saut ----------
 const defile = document.querySelector('[data-defile]');
 defile.insertAdjacentHTML('beforeend', [...defile.children].map((c) => c.outerHTML.replace('class="atout"', 'class="atout" aria-hidden="true"')).join(''));
+// On fait défiler la zone elle-même plutôt que de déplacer une bande de 5 000 px :
+// sur iPhone, une bande aussi large animée perdait des morceaux (cartes blanches).
+if (!calme) {
+  const copie = defile.querySelector('[aria-hidden="true"]');
+  let pos = 0, avant = 0, touche = false;
+  defile.addEventListener('pointerdown', () => (touche = true));
+  addEventListener('pointerup', () => (touche = false));
+  defile.addEventListener('touchstart', () => (touche = true), { passive: true });
+  addEventListener('touchend', () => (touche = false));
+  requestAnimationFrame(function avancer(t) {
+    const boucle = copie.offsetLeft - defile.firstElementChild.offsetLeft;
+    if (touche || Math.abs(defile.scrollLeft - pos) > 2) pos = defile.scrollLeft; // l'utilisateur a fait glisser
+    else pos += Math.min(t - avant, 50) * 0.04; // 40 px par seconde
+    if (pos >= boucle) pos -= boucle;
+    defile.scrollLeft = pos;
+    avant = t;
+    requestAnimationFrame(avancer);
+  });
+}
 
 // ---------- Discussion : les réponses arrivent une à une quand le téléphone est visible ----------
 const reponses = [
