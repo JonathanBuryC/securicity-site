@@ -125,9 +125,9 @@ h1 em{font-style:normal;color:var(--bleu)}
 /* ---------- Carrousel des fonctions ---------- */
 .atouts{background:var(--blanc);padding:96px 0 104px;overflow:hidden;border-top:1px solid var(--filet)}
 .atouts h2{max-width:1180px;margin:0 auto 48px;padding:0 24px}
-.defile{display:flex;gap:28px;width:max-content;animation:defile 60s linear infinite;will-change:transform;backface-visibility:hidden;transform:translate3d(0,0,0)}
+.defile{display:flex;gap:28px;width:max-content;animation:defile 60s linear infinite}
 .atout{margin-left:28px}.defile .atout+.atout{margin-left:0}
-@keyframes defile{from{transform:translate3d(0,0,0)}to{transform:translate3d(calc(-50% - 14px),0,0)}}
+@keyframes defile{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .atout{width:340px;flex:none}
 .visuel{position:relative;height:400px;border-radius:30px;overflow:hidden;display:grid;place-items:center;padding:28px;font:500 13px/1.4 "Public Sans",sans-serif;color:var(--app-texte)}
 .atout h3{font-size:1.65rem;line-height:1.1;letter-spacing:-.02em;margin:22px 4px 0;font-weight:800}
@@ -251,7 +251,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   .coque{width:224px;height:462px}
   .notif{width:60%;padding:8px 10px}.notif b{font-size:.8rem}.notif .ico{width:28px;height:28px}
   .notif:nth-child(2){top:64px}.notif:nth-child(3){top:128px}
-  .atout{width:220px}.visuel{height:260px;padding:16px;border-radius:24px}.atout h3{font-size:1.2rem;margin-top:14px}
+  .atout{width:220px;margin-left:16px}.visuel{height:260px;padding:16px;border-radius:24px}.atout h3{font-size:1.2rem;margin-top:14px}
   .defile{gap:16px;animation-duration:45s}
   .v-verrou{padding:28px 12px}.v-verrou .heure b{font-size:52px}.v-verrou .heure small{font-size:12px}
   .v-verrou .banniere{left:10px;right:10px;bottom:14px;padding:9px 10px;border-radius:16px;gap:1px 8px}
