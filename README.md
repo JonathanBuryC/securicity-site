@@ -16,7 +16,7 @@
 | `/conditions/` | `conditions/index.html` | Conditions d'utilisation |
 | `/mentions-legales/` | `mentions-legales/index.html` | Mentions légales |
 | `/confirmation/` | `confirmation/index.html` | Page ouverte après la confirmation de l'e-mail d'inscription |
-| — | `email/` | Modèle de l'e-mail de confirmation |
+| — | `email/bandeau.png` | Bandeau de l’e-mail de confirmation d’inscription |
 
 <table>
   <tr>
