@@ -26,7 +26,7 @@
       <ol>
         <li>Titre, alertes qui apparaissent une à une au défilement, téléphone qui montre l'app</li>
         <li>Carrousel « Tout votre quartier, dans une app »</li>
-        <li>« Avez-vous vu quelque chose ? » : la discussion se remplit message par message</li>
+        <li>« Lancez un appel aux voisins » : la discussion se remplit message par message</li>
         <li>Téléchargement</li>
         <li>Slogan et pied de page</li>
       </ol>
