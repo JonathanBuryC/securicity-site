@@ -152,6 +152,15 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-fil .post .ic{grid-row:span 2;width:30px;height:30px;border-radius:9px;background:rgba(27,63,168,.1);color:var(--bleu);display:grid;place-items:center}
 .v-fil .post .ic svg{width:16px;height:16px}
 .v-fil .post b{font-size:13px}.v-fil .post small{color:var(--app-discret);font-size:11px}
+.v-echos{background:#E7E3F1}
+.v-echos .panneau{width:100%;background:#fff;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);border-radius:4px}
+.v-echos .ligne-e{display:grid;grid-template-columns:28px 1fr;gap:9px;padding:11px 14px;border-top:1px solid var(--app-bordure);font-size:12px;line-height:1.35}
+.v-echos .ligne-e:first-child{border-top:0}
+.v-echos .av{width:28px;height:28px;border-radius:3px;color:#fff;font-weight:800;display:grid;place-items:center;font-size:12px}
+.v-echos small{color:var(--app-discret);font-size:11px}.v-echos small b{color:var(--app-texte)}
+.v-echos .sujet{color:var(--bleu);font-weight:800;font-size:9.5px;letter-spacing:.04em}
+.v-echos .rep{display:grid;grid-template-columns:18px 1fr;gap:6px;margin-top:7px;font-size:11px}
+.v-echos .rep .av{width:18px;height:18px;font-size:9px}
 .v-rayon{background:#DCE6F7}
 .v-rayon .reglages{width:100%;background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:12px}
 .v-rayon .valeur{display:flex;align-items:center;justify-content:space-between}
@@ -335,6 +344,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   <div class="defile" data-defile>
     <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
     <div class="atout"><div class="visuel v-fil"><div class="panneau"><div class="titres"><span class="on">Autour de moi</span><span>Les miens</span></div><div class="post"><span class="ic"><i data-lucide="bike"></i></span><b>Vol de vélo</b><small>Rue des Martyrs · 250 m · il y a 2 h</small></div><div class="post"><span class="ic"><i data-lucide="hand-fist"></i></span><b>Agression</b><small>Bd de Clichy · 600 m · hier</small></div><div class="post"><span class="ic"><i data-lucide="house"></i></span><b>Cambriolage</b><small>Rue Lepic · 1,2 km · lundi</small></div></div></div><h3>Le fil de votre quartier</h3></div>
+    <div class="atout"><div class="visuel v-echos"><div class="panneau"><div class="ligne-e"><span class="av" style="background:#2E9E5B">M</span><div><small><b>marie18</b> · 3 h · <span class="sujet">ENTRAIDE</span></small><br>Quelqu'un aurait une perceuse à prêter samedi ?<div class="rep"><span class="av" style="background:#7A4FB5">K</span><div><small><b>karim.b</b> · 2 h</small><br>J'en ai une, je te l'apporte vendredi.</div></div></div></div><div class="ligne-e"><span class="av" style="background:#C2611A">L</span><div><small><b>lea_c</b> · hier · <span class="sujet" style="color:var(--rouge,#E0452F)">PERDU</span></small><br>Chat roux perdu vers la rue Lepic, il répond à « Biscotte ».</div></div></div></div><h3>Discutez avec vos voisins</h3></div>
     <div class="atout"><div class="visuel v-verrou"><div class="heure"><small>jeudi 30 octobre</small><b class="tab">22:08</b></div><div class="banniere"><span class="app"><i></i></span><small><span>SECURICITY</span><span>maintenant</span></small><b>Agression à 250 m de chez vous</b><span class="texte-b">Boulevard de Clichy. Touchez pour voir.</span></div></div><h3>L'alerte, même téléphone verrouillé</h3></div>
     <div class="atout"><div class="visuel v-photo"><img src="/images/pillage-vitrine.jpg" alt="Des jeunes encapuchonnés brisent la vitrine d'un magasin, la nuit" loading="lazy" width="680" height="800"><small class="credit">© Emma Da Silva/AP/SIPA</small><span class="puce"><i data-lucide="camera"></i>Photo jointe au signalement</span></div><h3>Photographiez ce que vous voyez</h3></div>
     <div class="atout"><div class="visuel v-chat"><div class="fenetre"><div class="barre"><span class="mini-pin"></span><div><b>Cambriolage rue des Martyrs</b><br><small>!? Appel aux voisins</small></div></div><div class="echanges"><div class="ligne-msg moi"><div class="b">Porte forcée vers 14 h au n° 14. Quelqu'un a vu quelque chose ?</div></div><div class="ligne-msg"><span class="avatar" style="background:#2E9E5B">V</span><div class="b">Un scooter noir était garé devant vers 13 h 50.</div></div><div class="ligne-msg"><span class="avatar" style="background:#C2611A">M</span><div class="b">Je l'ai vu aussi, il est parti vers Pigalle.</div></div></div><div class="envoi">Répondre…<span><i data-lucide="send"></i></span></div></div></div><h3>Vos voisins vous répondent</h3></div>
@@ -391,7 +401,7 @@ const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const titres = ['La carte de votre quartier', 'Signaler en quelques secondes', 'Appel aux voisins', 'Prévenu au bon moment'];
 const DUREE = 3500;
 const carte = '<svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg>';
-const onglets = '<div class="onglets"><span class="on">Carte</span><span>Fil</span><span class="signaler"><span class="plus"><i></i><b>+</b></span>Signaler</span><span>Alertes</span><span>Profil</span></div>';
+const onglets = '<div class="onglets"><span class="on">Carte</span><span>Fil</span><span class="signaler"><span class="plus"><i></i><b>+</b></span>Signaler</span><span>Échos</span><span>Profil</span></div>';
 const ecrans = [
   `${carte}<div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div>
    <div class="pin" style="left:22%;top:30%"></div><div class="pin" style="left:66%;top:37%"></div>
@@ -408,7 +418,7 @@ const ecrans = [
    <div class="msg moi"><small>Vous</small>Merci, vous avez vu la plaque ?</div></div>`,
   `<div class="page" style="background:linear-gradient(180deg,#DCE3EC,#F6F7F9 45%)">
    <div class="notif-mini"><small style="color:var(--app-discret)">Securicity, maintenant</small><b>Agression à 250 m de chez vous</b><span>Boulevard de Clichy. Touchez pour voir.</span></div>
-   <h4 style="margin-top:10px">Alertes</h4>
+   <h4 style="margin-top:10px">Fil · Autour de moi</h4>
    <div class="liste">
      <div class="alerte"><span class="icone"><i data-lucide="hand-fist"></i></span><div><b>Agression à 250 m</b><small>Boulevard de Clichy, 22 h 08</small></div><span class="lu"></span></div>
      <div class="alerte"><span class="icone"><i data-lucide="house"></i></span><div><b>Cambriolage à 180 m</b><small>Rue des Martyrs, 14 h 10</small></div><span class="lu"></span></div>
