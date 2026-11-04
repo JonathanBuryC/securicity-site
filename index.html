@@ -9,7 +9,8 @@
 <meta property="og:description" content="La carte des incivilités de votre quartier, signalées par vos voisins.">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..900&display=swap">
+<link rel="preload" href="/polices/public-sans.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/polices/public-sans.css">
 <style>
 /* Accueil épuré : la carte, le téléphone, le titre. Le reste se découvre en descendant :
    les alertes qui tombent une à une sous le titre, le carrousel des fonctions, l’appel aux voisins et sa discussion,
@@ -524,7 +525,7 @@ h1 em{font-style:normal;color:var(--bleu)}
     </div>
     <div class="texte">
       <h2 id="titre-police">Le commissariat prévenu, en&nbsp;un&nbsp;geste.</h2>
-      <p>En signalant, activez « Prévenir » : Securicity écrit l’e‑mail pour vous et l’envoie au bon service, avec le lieu, l’heure et la photo. Le commissariat ou la mairie vous répond directement. Gratuit.</p>
+      <p>En signalant, activez « Prévenir » : Securicity écrit l’e‑mail pour vous et l’envoie au bon service, avec le lieu, l’heure et la photo. Le commissariat ou la mairie peut vous répondre directement. Gratuit.</p>
     </div>
   </div>
 </section>
@@ -550,7 +551,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 
 <footer class="pied" id="pied"><span>© 2026 Securicity</span><span>Presse et contact : contact@securicity.net</span><a href="/confidentialite">Confidentialité</a><a href="/conditions">Conditions d'utilisation</a><a href="/mentions-legales">Mentions légales</a></footer>
 
-<script src="https://cdn.jsdelivr.net/npm/lucide@1.49.0/dist/umd/lucide.min.js"></script>
+<script src="/vendor/lucide.min.js"></script>
 <script>
 {
 const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -559,7 +560,7 @@ const calme = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const titres = ['La carte de votre quartier', 'Signaler en quelques secondes', 'Appel aux voisins', 'Prévenu au bon moment'];
 const DUREE = 3500;
 const carte = '<svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg>';
-const onglets = '<div class="onglets"><span class="on">Carte</span><span>Fil</span><span class="signaler"><span class="plus"><i></i><b>+</b></span>Signaler</span><span>Profil</span></div>';
+const onglets = '<div class="onglets"><span class="on">Carte</span><span class="signaler"><span class="plus"><i></i><b>+</b></span>Signaler</span><span>Fil</span></div>';
 const ecrans = [
   `${carte}<div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div>
    <div class="pin" style="left:22%;top:30%"></div><div class="pin" style="left:66%;top:37%"></div>
