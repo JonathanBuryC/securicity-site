@@ -112,7 +112,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 
 /* ---------- Alertes : elles tombent une à une sous le titre dès qu'on commence à défiler ---------- */
 .atouts h2,.temoins h2,.police h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
-.temoins p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
+.temoins p,.police p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
 .pile{position:relative;height:330px;margin-top:clamp(28px,5vh,56px);max-width:620px}
 .notif{position:absolute;width:min(100%,580px);background:#fff;color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.1),0 26px 50px -22px rgba(20,35,59,.45);
   opacity:0;filter:blur(10px);transform:translateY(70px) scale(calc(var(--s) * .96));transition:opacity .7s var(--sortie),filter .7s var(--sortie),transform .9s var(--sortie)}
@@ -218,11 +218,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 .police{position:relative;overflow:hidden}
 .police .texte{background:rgba(246,247,249,.92);border-radius:24px;padding:32px 34px;max-width:560px}
 .police .in{position:relative;max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px 56px;align-items:center}
-.police .texte p{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:22px 0 0}
-.avantages{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:14px;max-width:46ch}
-.avantages li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
-.avantages li span{width:26px;height:26px;border-radius:50%;background:rgba(27,63,168,.1);color:var(--bleu);display:grid;place-items:center;flex:none;margin-top:1px}
-.avantages svg{width:15px;height:15px}
 .scene-p{position:relative;padding-right:250px}
 .scene-p .vitre{font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left;transition:opacity .4s}
 .scene-p.fondu .vitre{opacity:0}
@@ -357,7 +352,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   .raccourcis span{font-size:11px;padding:5px 9px}  .telecharger{flex-direction:column;align-items:flex-start}
   .temoins .texte,.police .texte{padding:24px}
   /* Petit écran : la bulle passe sous la case du commissariat, la pointe vers le haut. */
-  .scene-p{padding-right:0}
+  .scene-p{padding-right:0;padding-bottom:130px}
   .bulle-bd{left:40px;top:326px;width:210px;padding:11px 11px 10px;font-size:11px;gap:6px;transform-origin:163px -20px}
   .bulle-bd::before{left:150px;top:-22px;border-width:0 13px 19px;border-color:transparent transparent var(--encre)}
   .bulle-bd::after{left:155px;top:-13px;border-width:0 8px 12px;border-color:transparent transparent #fff}
@@ -528,13 +523,8 @@ h1 em{font-style:normal;color:var(--bleu)}
       </div>
     </div>
     <div class="texte">
-      <h2 id="titre-police">Le commissariat prévenu, en un geste.</h2>
-      <p>En signalant, activez « Prévenir ». Securicity écrit l’e-mail à votre place et l’envoie au bon service : le lieu, l’heure, ce qui s’est passé et la photo.</p>
-      <ul class="avantages">
-        <li><span><i data-lucide="check"></i></span>Le bon destinataire, trouvé pour vous : commissariat, police municipale ou mairie, selon le lieu et le type de signalement.</li>
-        <li><span><i data-lucide="check"></i></span>Pour vous répondre, ils écrivent directement à votre adresse e-mail.</li>
-        <li><span><i data-lucide="check"></i></span>Gratuit, et rien ne part sans votre accord.</li>
-      </ul>
+      <h2 id="titre-police">Le commissariat prévenu, en&nbsp;un&nbsp;geste.</h2>
+      <p>En signalant, activez « Prévenir » : Securicity écrit l’e‑mail pour vous et l’envoie au bon service, avec le lieu, l’heure et la photo. Le commissariat ou la mairie vous répond directement. Gratuit.</p>
     </div>
   </div>
 </section>
