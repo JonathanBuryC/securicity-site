@@ -12,7 +12,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400..900&display=swap">
 <style>
 /* Accueil épuré : la carte, le téléphone, le titre. Le reste se découvre en descendant :
-   les alertes qui tombent une à une sous le titre, le carrousel des fonctions, l’appel aux voisins et sa discussion. */
+   les alertes qui tombent une à une sous le titre, le carrousel des fonctions, l’appel aux voisins et sa discussion,
+   puis le commissariat prévenu (le signalement se fait dans le téléphone, l’e-mail en sort dans une bulle). */
 :root{
   --bleu:#1B3FA8; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --police:#0B2A6F;
   --fond:#F6F7F9; --blanc:#FFFFFF; --filet:#D5DBE4;
@@ -110,7 +111,7 @@ h1{font-size:clamp(3rem,7.2vw,6rem);line-height:.96;letter-spacing:-.04em;font-w
 h1 em{font-style:normal;color:var(--bleu)}
 
 /* ---------- Alertes : elles tombent une à une sous le titre dès qu'on commence à défiler ---------- */
-.atouts h2,.temoins h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
+.atouts h2,.temoins h2,.police h2,.final h2{font-size:clamp(2rem,4.2vw,3.4rem);line-height:1.04;letter-spacing:-.03em;margin:0;font-weight:850}
 .temoins p{color:var(--texte2);font-size:1.12rem;max-width:40ch;margin:18px 0 0}
 .pile{position:relative;height:330px;margin-top:clamp(28px,5vh,56px);max-width:620px}
 .notif{position:absolute;width:min(100%,580px);background:#fff;color:var(--encre);border-radius:26px;padding:18px 22px;display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;box-shadow:0 2px 6px rgba(20,35,59,.1),0 26px 50px -22px rgba(20,35,59,.45);
@@ -211,6 +212,88 @@ h1 em{font-style:normal;color:var(--bleu)}
 [data-discussion] .vitre{font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left}
 .saisie{background:var(--app-surface);border:1px solid var(--app-bordure);border-radius:18px;padding:8px 12px;color:var(--app-discret)}
 
+/* ---------- Prévenir le commissariat : téléphone à gauche, texte à droite ---------- */
+.police{background:var(--blanc);border-top:1px solid var(--filet);overflow:hidden}
+.police .in{max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px 56px;align-items:center}
+.police .texte p{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:22px 0 0}
+.avantages{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:14px;max-width:46ch}
+.avantages li{display:flex;gap:12px;align-items:flex-start;font-weight:600}
+.avantages li span{width:26px;height:26px;border-radius:50%;background:rgba(27,63,168,.1);color:var(--bleu);display:grid;place-items:center;flex:none;margin-top:1px}
+.avantages svg{width:15px;height:15px}
+.scene-p{position:relative;padding-right:250px}
+.scene-p .vitre{font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left;transition:opacity .4s}
+.scene-p.fondu .vitre{opacity:0}
+.scene-p.remise,.scene-p.remise *,.scene-p.remise *::before,.scene-p.remise *::after,
+.scene-p.calme,.scene-p.calme *,.scene-p.calme *::before,.scene-p.calme *::after{transition:none!important;animation:none!important}
+.vue-p{position:absolute;inset:0;transition:transform .55s var(--sortie)}
+.v-type,.v-env{transform:translateX(100%);background:var(--app-fond);box-shadow:-10px 0 24px -14px rgba(20,35,59,.35)}
+.scene-p.type .v-type,.scene-p.env .v-env{transform:none}
+.scene-p.type .v-pos,.scene-p.env .v-type{transform:translateX(-30%)}
+/* 1. Le repère tombe sur le plan */
+.pin-p{left:calc(50% - 15px);top:calc(43% - 34px);opacity:0}
+.scene-p.pose .pin-p{animation:chute .75s cubic-bezier(.3,1.45,.5,1) forwards}
+@keyframes chute{from{opacity:1;transform:translateY(-150px) rotate(-45deg)}to{opacity:1;transform:translateY(0) rotate(-45deg)}}
+.ombre-p{left:calc(50% - 7px);top:43%;transform:scale(0);transition:transform .5s .3s var(--sortie)}
+.scene-p.pose .ombre-p{transform:none}
+.adr-p{opacity:0;transform:translateY(16px);transition:opacity .4s .55s,transform .6s .55s var(--sortie)}
+.scene-p.pose .adr-p{opacity:1;transform:none}
+/* 2. Le type */
+.types-p{display:flex;flex-wrap:wrap;gap:7px}
+.t-p{display:inline-flex;align-items:center;gap:6px;background:var(--app-surface);border:1px solid var(--app-bordure);border-radius:99px;padding:5px 10px 5px 6px;font-weight:600;transition:background-color .25s,color .25s,border-color .25s}
+.t-p svg{width:14px;height:14px;color:var(--rouge);transition:color .25s}
+.scene-p.velo .t-p.velo{background:var(--bleu);border-color:var(--bleu);color:#fff;animation:tape .6s}
+.scene-p.velo .t-p.velo svg{color:#fff}
+@keyframes tape{0%{box-shadow:0 0 0 0 rgba(27,63,168,.45)}100%{box-shadow:0 0 0 14px rgba(27,63,168,0)}}
+/* 3. Le détail et la case du commissariat */
+.v-env .photo{height:92px;flex:none}
+.carte-pol{background:var(--police);color:#fff;border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:7px}
+.ligne-pol{display:flex;align-items:center;gap:9px}
+.ligne-pol b{flex:1;font-size:12px;line-height:1.25}
+.ico-pol{width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.15);display:grid;place-items:center;flex:none}
+.ico-pol svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.inter-pol{width:38px;height:23px;border-radius:12px;background:rgba(255,255,255,.25);position:relative;flex:none;transition:background-color .3s}
+.inter-pol::after{content:"";position:absolute;left:2px;top:2px;width:19px;height:19px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .35s var(--sortie)}
+.scene-p.active .inter-pol{background:#34C759;animation:tape-b .6s}
+.scene-p.active .inter-pol::after{transform:translateX(15px)}
+@keyframes tape-b{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}100%{box-shadow:0 0 0 14px rgba(255,255,255,0)}}
+.etat-pol{font-size:10px;color:#DCE4F7}
+.etat-pol .apres{display:none;color:#fff;font-weight:700}
+.scene-p.pret .etat-pol .avant{display:none}
+.scene-p.pret .etat-pol .apres{display:inline}
+.scene-p.pret .carte-pol{animation:recu .6s var(--sortie)}
+@keyframes recu{40%{transform:scale(1.05)}}
+.scene-p.publie .publier{animation:appui .35s}
+@keyframes appui{50%{transform:scale(.94);filter:brightness(.85)}}
+/* 4. Signalement publié */
+.v-fin{background:#fff;display:grid;place-items:center;opacity:0;transform:scale(.96);transition:opacity .35s,transform .5s var(--sortie)}
+.scene-p.fin .v-fin{opacity:1;transform:none}
+.fin-p{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;padding:0 22px}
+.fin-p b{font-size:17px;font-weight:800;margin-top:8px}
+.fin-p span{color:var(--app-discret);font-size:12px}
+.coche{width:64px;height:64px;fill:none;stroke:#2E9E5B;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
+.coche circle{fill:rgba(46,158,91,.1);stroke-dasharray:151;stroke-dashoffset:151;transition:stroke-dashoffset .6s .1s ease-out}
+.coche path{stroke-dasharray:36;stroke-dashoffset:36;transition:stroke-dashoffset .35s .6s ease-out}
+.scene-p.fin .coche circle,.scene-p.fin .coche path{stroke-dashoffset:0}
+/* La bulle de BD : l'e-mail sort du téléphone, puis y rentre */
+.bulle-bd{position:absolute;left:262px;top:206px;width:250px;z-index:2;background:#fff;border:3px solid var(--encre);border-radius:8px;box-shadow:7px 7px 0 var(--encre);padding:13px 14px 12px;font:500 12px/1.4 "Public Sans",sans-serif;color:var(--encre);display:flex;flex-direction:column;gap:8px;
+  opacity:0;transform:translate(-110px,22px) scale(.15) rotate(-10deg);transform-origin:-18px 52px;transition:transform .65s cubic-bezier(.34,1.56,.64,1),opacity .2s}
+.bulle-bd::before,.bulle-bd::after{content:"";position:absolute;width:0;height:0;border-style:solid;border-color:transparent}
+.bulle-bd::before{left:-22px;top:38px;border-width:13px 19px 13px 0;border-right-color:var(--encre)}
+.bulle-bd::after{left:-14px;top:43px;border-width:8px 12px 8px 0;border-right-color:#fff}
+.scene-p.sort .bulle-bd{opacity:1;transform:rotate(-2deg)}
+.scene-p.rentre .bulle-bd{opacity:0;transform:translate(-120px,30px) scale(.1) rotate(6deg);transition:transform .55s cubic-bezier(.6,0,.8,.3),opacity .3s .25s}
+.bd-tete{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;padding-bottom:8px;border-bottom:2px dashed var(--filet)}
+.bd-ico{width:28px;height:28px;border-radius:8px;background:var(--bleu);color:#fff;display:grid;place-items:center;flex:none}
+.bd-ico svg{width:16px;height:16px}
+.bd-ligne{display:grid;grid-template-columns:42px 1fr;gap:6px}
+.bd-ligne small{color:var(--texte2);font-weight:700;font-size:11px;padding-top:1px}
+.bd-ligne span{font-weight:700}
+.bd-corps{display:flex;gap:9px;align-items:center;background:var(--fond);border-radius:8px;padding:7px}
+.bd-photo{width:44px;height:44px;border-radius:6px;flex:none;background:linear-gradient(160deg,#9BA7B8,#5D6B80 60%,#3E4A5C)}
+.bd-corps small{display:block;color:var(--texte2);font-size:10.5px;margin-top:2px}
+.bd-rep{display:flex;align-items:center;gap:6px;color:var(--bleu);font-weight:700;font-size:11.5px}
+.bd-rep svg{width:14px;height:14px}
+
 /* ---------- Fin : promesse + téléchargement ---------- */
 .final{max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:48px 72px;align-items:end}
 .final p{color:var(--texte2);font-size:1.12rem;max-width:52ch;margin:22px 0 0}
@@ -250,6 +333,9 @@ h1 em{font-style:normal;color:var(--bleu)}
   .chez{left:50%;top:68%}
   .temoins .in,.final{grid-template-columns:1fr}
   .temoins .tel{justify-self:center}
+  .police .in{grid-template-columns:minmax(0,1fr)}
+  .police .texte{order:-1}
+  .scene-p{justify-self:center}
 }
 @media (max-width:520px){
   .marque{font-size:26px;gap:12px}
@@ -267,6 +353,12 @@ h1 em{font-style:normal;color:var(--bleu)}
   .v-types{padding:14px}.v-types .type{font-size:11px;padding:4px 9px 4px 4px;gap:5px}.v-types .type span{width:20px;height:20px}
   .raccourcis span{font-size:11px;padding:5px 9px}  .telecharger{flex-direction:column;align-items:flex-start}
   .temoins .texte{padding:24px}
+  /* Petit écran : la bulle passe sous la case du commissariat, la pointe vers le haut. */
+  .scene-p{padding-right:0}
+  .bulle-bd{left:40px;top:326px;width:210px;padding:11px 11px 10px;font-size:11px;gap:6px;transform-origin:163px -20px}
+  .bulle-bd::before{left:150px;top:-22px;border-width:0 13px 19px;border-color:transparent transparent var(--encre)}
+  .bulle-bd::after{left:155px;top:-13px;border-width:0 8px 12px;border-color:transparent transparent #fff}
+  .bd-tete{font-size:12px}.bd-ligne{grid-template-columns:36px 1fr}
 }
 @media (prefers-reduced-motion:reduce){
   .piste,.points button span,.notif,.fil .msg{transition:none}
@@ -350,6 +442,60 @@ h1 em{font-style:normal;color:var(--bleu)}
         <div class="fil" data-fil aria-live="polite"></div>
         <div class="saisie">Écrire un message…</div>
       </div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="police" aria-labelledby="titre-police">
+  <div class="in">
+    <div class="scene-p" data-police>
+      <div class="coque"><div class="vitre" aria-hidden="true">
+        <div class="vue-p v-pos">
+          <svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice"><use href="#plan"/></svg>
+          <div class="haut"><div class="bulle">Touchez la carte à l’endroit de l’incivilité</div></div>
+          <div class="ombre ombre-p"></div><div class="pin gros pin-p"></div>
+          <div class="bas"><div class="carton adr-p"><small>Position du signalement</small><b>14 rue des Martyrs, Paris 9e</b></div></div>
+        </div>
+        <div class="vue-p v-type"><div class="page">
+          <h4>Que s’est-il passé ?</h4>
+          <div class="types-p">
+            <span class="t-p"><i data-lucide="spray-can"></i>Tag</span><span class="t-p"><i data-lucide="package-x"></i>Dépôt sauvage</span>
+            <span class="t-p velo"><i data-lucide="bike"></i>Vol de vélo</span><span class="t-p"><i data-lucide="house"></i>Cambriolage</span>
+            <span class="t-p"><i data-lucide="hand-fist"></i>Agression</span><span class="t-p"><i data-lucide="megaphone"></i>Nuisances sonores</span>
+            <span class="t-p"><i data-lucide="car"></i>Stationnement gênant</span><span class="t-p"><i data-lucide="footprints"></i>Rôdeur</span>
+          </div>
+        </div></div>
+        <div class="vue-p v-env"><div class="page">
+          <div class="photo"></div>
+          <div class="titre"><span class="icone"><i data-lucide="bike"></i></span><div><b style="font-size:14px">Vol de vélo</b><br><small style="color:var(--app-discret)">14 rue des Martyrs, Paris 9e</small></div></div>
+          <div class="question">Antivol coupé devant le 14, vers 18 h.</div>
+          <div class="carte-pol">
+            <div class="ligne-pol"><span class="ico-pol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir le commissariat de police du 9e</b><span class="inter-pol"></span></div>
+            <small class="etat-pol"><span class="avant">Il recevra votre signalement par e-mail.</span><span class="apres">✓ E-mail prêt pour le commissariat</span></small>
+          </div>
+          <div class="bouton publier">Publier le signalement</div>
+        </div></div>
+        <div class="vue-p v-fin"><div class="fin-p">
+          <svg class="coche" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
+          <b>Signalement publié</b><span>Le commissariat du 9e va recevoir votre e-mail.</span>
+        </div></div>
+      </div></div>
+      <div class="bulle-bd" role="img" aria-label="Aperçu de l’e-mail envoyé au commissariat de police du 9e : vol de vélo, 14 rue des Martyrs, avec la description et la photo ; le commissariat répond directement à l’habitant.">
+        <div class="bd-tete"><span class="bd-ico"><i data-lucide="mail"></i></span>E-mail au commissariat</div>
+        <div class="bd-ligne"><small>À</small><span>Commissariat de police, Paris 9e</span></div>
+        <div class="bd-ligne"><small>Objet</small><span>Vol de vélo, 14 rue des Martyrs</span></div>
+        <div class="bd-corps"><span class="bd-photo"></span><span>« Antivol coupé devant le 14, vers 18 h. »<small>Aujourd’hui à 18 h 03 · photo jointe</small></span></div>
+        <div class="bd-rep"><i data-lucide="reply"></i>Il vous répond sur votre e-mail</div>
+      </div>
+    </div>
+    <div class="texte">
+      <h2 id="titre-police">Le commissariat prévenu, en un geste.</h2>
+      <p>En signalant, activez « Prévenir ». Securicity écrit l’e-mail à votre place et l’envoie au bon service : le lieu, l’heure, ce qui s’est passé et la photo.</p>
+      <ul class="avantages">
+        <li><span><i data-lucide="check"></i></span>Le bon destinataire, trouvé pour vous : commissariat, police municipale ou mairie, selon le lieu et le type de signalement.</li>
+        <li><span><i data-lucide="check"></i></span>Pour vous répondre, ils écrivent directement à votre adresse e-mail.</li>
+        <li><span><i data-lucide="check"></i></span>Gratuit, et rien ne part sans votre accord.</li>
+      </ul>
     </div>
   </div>
 </section>
@@ -548,6 +694,35 @@ else new IntersectionObserver((entrees) => {
   visible = entrees[0].isIntersecting;
   if (visible && !enCours) raconter();
 }, { threshold: 0.6 }).observe(document.querySelector('[data-discussion]'));
+
+// ---------- Prévenir le commissariat : le signalement se fait, l'e-mail sort du téléphone puis y rentre ----------
+const scene = document.querySelector('[data-police]');
+// [attente avant l'étape (ms), classes ajoutées] : repère posé, type choisi, case activée, bulle, retour, publication.
+const ETAPES = [[600, 'pose'], [1600, 'type'], [1000, 'velo'], [1000, 'env'], [1200, 'active'], [300, 'sort'], [3600, 'rentre pret'], [1100, 'publie'], [500, 'fin']];
+let policeVisible = false, policeEnCours = false;
+async function jouerPolice() {
+  policeEnCours = true;
+  while (policeVisible) {
+    scene.className = 'scene-p remise fondu'; // retour au début, sans animation, téléphone masqué
+    await attendre(50);
+    scene.classList.remove('remise');
+    scene.classList.remove('fondu');
+    for (const [attente, classes] of ETAPES) {
+      await attendre(attente);
+      if (!policeVisible) break;
+      scene.classList.add(...classes.split(' '));
+    }
+    await attendre(3000);
+    scene.classList.add('fondu');
+    await attendre(450);
+  }
+  policeEnCours = false;
+}
+if (calme) scene.classList.add('calme', 'pose', 'env', 'active', 'sort');
+else new IntersectionObserver((entrees) => {
+  policeVisible = entrees[0].isIntersecting;
+  if (policeVisible && !policeEnCours) jouerPolice();
+}, { threshold: 0.5 }).observe(scene);
 
 try { lucide.createIcons(); } catch (e) {}
 aller(0);
