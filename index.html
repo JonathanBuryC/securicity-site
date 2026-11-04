@@ -128,7 +128,9 @@ h1 em{font-style:normal;color:var(--bleu)}
 /* ---------- Carrousel des fonctions ---------- */
 .atouts{background:var(--blanc);padding:96px 0 104px;overflow:hidden;border-top:1px solid var(--filet)}
 .atouts h2{max-width:1180px;margin:0 auto 48px;padding:0 24px}
-.defile{display:flex;gap:28px;overflow-x:auto;scrollbar-width:none}.defile::-webkit-scrollbar{display:none}
+.defile{display:flex;gap:28px;overflow:hidden;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.defile.tenu{cursor:grabbing}.defile img{pointer-events:none}
+.defile .atout{will-change:transform}
 .atout{margin-left:28px}.defile .atout+.atout{margin-left:0}
 .atout{width:340px;flex:none}
 .visuel{position:relative;height:400px;border-radius:30px;overflow:hidden;display:grid;place-items:center;padding:28px;font:500 13px/1.4 "Public Sans",sans-serif;color:var(--app-texte)}
@@ -143,23 +145,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-photo .puce{position:absolute;left:20px;bottom:20px;background:rgba(255,255,255,.94);box-shadow:0 6px 18px -6px rgba(20,35,59,.45)}
 .puce{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;background:rgba(27,63,168,.1);color:var(--bleu);font-weight:700;border-radius:99px;padding:6px 12px}
 .puce svg{width:15px;height:15px}
-.v-fil{background:#E4E9F1}
-.v-fil .panneau{width:100%;background:#fff;border-radius:18px;padding:16px 16px 6px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45)}
-.v-fil .titres{display:flex;gap:18px;border-bottom:1px solid var(--app-bordure);font-weight:600;color:var(--app-discret);font-size:13px}
-.v-fil .titres span{padding-bottom:8px}.v-fil .titres .on{color:var(--app-texte);font-weight:800;box-shadow:inset 0 -3px 0 var(--bleu)}
-.v-fil .post{display:grid;grid-template-columns:auto 1fr;gap:2px 10px;padding:10px 0;border-top:1px solid var(--app-bordure);font-size:12px}
-.v-fil .titres+.post{border-top:0}
-.v-fil .post .ic{grid-row:span 2;width:30px;height:30px;border-radius:9px;background:rgba(27,63,168,.1);color:var(--bleu);display:grid;place-items:center}
-.v-fil .post .ic svg{width:16px;height:16px}
-.v-fil .post b{font-size:13px}.v-fil .post small{color:var(--app-discret);font-size:11px}
-.v-rayon{background:#DCE6F7}
-.v-rayon .reglages{width:100%;background:#fff;border-radius:18px;padding:18px;box-shadow:0 18px 36px -18px rgba(20,35,59,.45);display:flex;flex-direction:column;gap:12px}
-.v-rayon .valeur{display:flex;align-items:center;justify-content:space-between}
-.v-rayon .valeur b{font-size:34px;letter-spacing:-.03em}
-.rond{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--app-bordure);display:grid;place-items:center;font-size:20px;font-weight:600}
-.ligne{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--app-bordure)}
-.interrupteur{width:40px;height:24px;border-radius:99px;background:#34C759;position:relative;flex:none}
-.interrupteur::after{content:"";position:absolute;right:2px;top:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25)}
 .v-adresses{background:#DCE6F5;place-items:start stretch;padding:22px}
 .v-adresses .france{position:absolute;left:6%;top:12%;width:88%;height:auto}
 .raccourcis{position:relative;display:flex;flex-wrap:wrap;gap:6px}
@@ -279,7 +264,6 @@ h1 em{font-style:normal;color:var(--bleu)}
   .v-verrou .banniere .app{width:28px;height:28px}.v-verrou .banniere b{font-size:12px}.v-verrou .banniere .texte-b,.v-verrou .banniere small{font-size:10px}
   .puce{font-size:11px;padding:5px 9px}.v-photo .puce{left:12px;bottom:12px}
   .v-chat{padding:12px}.v-chat .b{font-size:11px}.v-chat .barre b{font-size:12px}
-  .v-rayon .reglages{padding:14px;gap:10px}.v-rayon .valeur b{font-size:26px}.rond{width:32px;height:32px}
   .v-types{padding:14px}.v-types .type{font-size:11px;padding:4px 9px 4px 4px;gap:5px}.v-types .type span{width:20px;height:20px}
   .raccourcis span{font-size:11px;padding:5px 9px}  .telecharger{flex-direction:column;align-items:flex-start}
   .temoins .texte{padding:24px}
@@ -288,7 +272,6 @@ h1 em{font-style:normal;color:var(--bleu)}
   .piste,.points button span,.notif,.fil .msg{transition:none}
   .notif,.fil .msg{opacity:1;filter:none;transform:none}
   .notif:nth-child(2){transform:scale(.97)}.notif:nth-child(3){transform:scale(.94)}
-  .defile [aria-hidden="true"]{display:none}
   .ecrit i{animation:none}
 }
 </style>
@@ -344,13 +327,11 @@ h1 em{font-style:normal;color:var(--bleu)}
   <h2>Tout votre quartier, dans une app.</h2>
   <div class="defile" data-defile>
     <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
-    <div class="atout"><div class="visuel v-fil"><div class="panneau"><div class="titres"><span class="on">Autour de moi</span><span>Publiés</span></div><div class="post"><span class="ic"><i data-lucide="bike"></i></span><b>Vol de vélo</b><small>Rue des Martyrs · 250 m · il y a 2 h</small></div><div class="post"><span class="ic"><i data-lucide="hand-fist"></i></span><b>Agression</b><small>Bd de Clichy · 600 m · hier</small></div><div class="post"><span class="ic"><i data-lucide="house"></i></span><b>Cambriolage</b><small>Rue Lepic · 1,2 km · lundi</small></div></div></div><h3>Le fil de votre quartier</h3></div>
     <div class="atout"><div class="visuel v-verrou"><div class="heure"><small>jeudi 30 octobre</small><b class="tab">22:08</b></div><div class="banniere"><span class="app"><i></i></span><small><span>SECURICITY</span><span>maintenant</span></small><b>Agression à 250 m de chez vous</b><span class="texte-b">Boulevard de Clichy. Touchez pour voir.</span></div></div><h3>L'alerte, même téléphone verrouillé</h3></div>
     <div class="atout"><div class="visuel v-transmission"><div class="carte-p"><div class="ligne-p"><span class="ico-p"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir la police municipale de votre commune</b><span class="inter-p"></span></div><small>Envoyé par e-mail 30 minutes après la publication. <u>Voir le message</u></small></div></div><h3>La mairie ou la police prévenue en un geste</h3></div>
     <div class="atout"><div class="visuel v-photo"><img src="/images/pillage-vitrine.jpg" alt="Des jeunes encapuchonnés brisent la vitrine d'un magasin, la nuit" loading="lazy" width="680" height="800"><small class="credit">© Emma Da Silva/AP/SIPA</small><span class="puce"><i data-lucide="camera"></i>Photo jointe au signalement</span></div><h3>Photographiez ce que vous voyez</h3></div>
     <div class="atout"><div class="visuel v-chat"><div class="fenetre"><div class="barre"><span class="mini-pin"></span><div><b>Cambriolage rue des Martyrs</b><br><small>!? Appel aux voisins</small></div></div><div class="echanges"><div class="ligne-msg moi"><div class="b">Porte forcée vers 14 h au n° 14. Quelqu'un a vu quelque chose ?</div></div><div class="ligne-msg"><span class="avatar" style="background:#2E9E5B">V</span><div class="b">Un scooter noir était garé devant vers 13 h 50.</div></div><div class="ligne-msg"><span class="avatar" style="background:#C2611A">M</span><div class="b">Je l'ai vu aussi, il est parti vers Pigalle.</div></div></div><div class="envoi">Répondre…<span><i data-lucide="send"></i></span></div></div></div><h3>Vos voisins vous répondent</h3></div>
-    <div class="atout"><div class="visuel v-adresses"><svg class="france" viewBox="0 0 220 220" aria-hidden="true"><path d="M112 14L132 26L150 30L176 46L196 58L190 82L182 98L188 112L182 128L194 146L190 160L170 168L150 178L128 180L112 190L100 204L78 198L56 192L50 176L58 150L54 128L44 108L30 96L10 84L18 72L42 74L56 62L62 46L82 40L98 30Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><path d="M204 176L210 186L208 204L200 210L196 194Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><path d="M104 64Q168 96 146 164" fill="none" stroke="#1B3FA8" stroke-width="2.5" stroke-dasharray="6 6" stroke-linecap="round"/><circle cx="104" cy="64" r="20" fill="rgba(27,63,168,.14)" stroke="#1B3FA8" stroke-width="2"/><circle cx="146" cy="164" r="20" fill="rgba(27,63,168,.08)" stroke="#1B3FA8" stroke-width="2" stroke-dasharray="4 3"/><g fill="#FFFFFF" stroke="#1B3FA8" stroke-width="2.4"><circle cx="104" cy="64" r="11"/><circle cx="146" cy="164" r="11"/></g><path d="M98 66.5L104 61.5L110 66.5V70H98Z" fill="#1B3FA8"/><path d="M142 158H150V170L146 167L142 170Z" fill="#1B3FA8"/><g font-family="Public Sans,system-ui,sans-serif" font-weight="700" font-size="11" fill="#14233B" text-anchor="middle"><text x="104" y="98">Paris</text><text x="146" y="198">Marseille</text></g><rect x="148" y="98" width="50" height="19" rx="9.5" fill="#1B3FA8"/><text x="173" y="111.5" font-family="Public Sans,system-ui,sans-serif" font-weight="700" font-size="10.5" fill="#FFFFFF" text-anchor="middle">775 km</text></svg><div class="raccourcis"><span class="on"><i data-lucide="map-pin-house"></i>Chez moi</span><span><i data-lucide="bookmark"></i>Parents</span></div></div><h3>Toutes vos adresses, d'un geste</h3></div>
-    <div class="atout"><div class="visuel v-rayon"><div class="reglages"><small style="color:var(--app-discret)">Rayon d'alerte</small><div class="valeur"><span class="rond">−</span><b class="tab">2 km</b><span class="rond">+</span></div><div class="ligne"><span>Autour de moi</span><span class="interrupteur"></span></div><div class="ligne"><span>Autour de chez moi</span><span class="interrupteur"></span></div></div></div><h3>Votre rayon, de 2 à 3 km</h3></div>
+    <div class="atout"><div class="visuel v-adresses"><svg class="france" viewBox="0 0 220 220" aria-hidden="true"><path d="M112 14L132 26L150 30L176 46L196 58L190 82L182 98L188 112L182 128L194 146L190 160L170 168L150 178L128 180L112 190L100 204L78 198L56 192L50 176L58 150L54 128L44 108L30 96L10 84L18 72L42 74L56 62L62 46L82 40L98 30Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><path d="M204 176L210 186L208 204L200 210L196 194Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><circle cx="104" cy="64" r="20" fill="rgba(27,63,168,.14)" stroke="#1B3FA8" stroke-width="2"/><circle cx="146" cy="164" r="20" fill="rgba(27,63,168,.08)" stroke="#1B3FA8" stroke-width="2" stroke-dasharray="4 3"/><g fill="#FFFFFF" stroke="#1B3FA8" stroke-width="2.4"><circle cx="104" cy="64" r="11"/><circle cx="146" cy="164" r="11"/></g><path d="M98 66.5L104 61.5L110 66.5V70H98Z" fill="#1B3FA8"/><path d="M142 158H150V170L146 167L142 170Z" fill="#1B3FA8"/><g font-family="Public Sans,system-ui,sans-serif" font-weight="700" font-size="11" fill="#14233B" text-anchor="middle"><text x="104" y="98">Paris</text><text x="146" y="198">Marseille</text></g></svg><div class="raccourcis"><span class="on"><i data-lucide="map-pin-house"></i>Chez moi</span><span><i data-lucide="bookmark"></i>Parents</span></div></div><h3>Toutes vos adresses, d'un geste</h3></div>
     <div class="atout"><div class="visuel v-types"><div class="nuage"><span class="type"><span><i data-lucide="spray-can"></i></span>Tag</span><span class="type"><span><i data-lucide="package-x"></i></span>Dépôt sauvage</span><span class="type"><span><i data-lucide="megaphone"></i></span>Nuisances sonores</span><span class="type choisi"><span><i data-lucide="bike"></i></span>Vol de vélo</span><span class="type"><span><i data-lucide="house"></i></span>Cambriolage</span><span class="type"><span><i data-lucide="car"></i></span>Stationnement gênant</span><span class="type"><span><i data-lucide="hand-fist"></i></span>Agression</span><span class="type"><span><i data-lucide="motorbike"></i></span>Vol de scooter</span><span class="type"><span><i data-lucide="speech"></i></span>Harcèlement de rue</span><span class="type"><span><i data-lucide="bomb"></i></span>Vandalisme</span><span class="type"><span><i data-lucide="footprints"></i></span>Rôdeur</span></div></div><h3>17 types d'incivilités</h3></div>
   </div>
 </section>
@@ -464,28 +445,65 @@ function suivreDefilement() {
 if (calme) notifs.forEach((n) => n.classList.add('vue'));
 else { addEventListener('scroll', suivreDefilement, { passive: true }); suivreDefilement(); }
 
-// ---------- Carrousel : la série est dupliquée pour boucler sans saut ----------
+// ---------- Carrousel : bande sans fin ----------
+// Chaque carte est déplacée seule (transform, au pixel près, sans saccade) et repasse à droite quand elle sort à gauche :
+// la bande tourne sans fin et sans saut. La série est doublée pour couvrir les très grands écrans.
+// Glisser du doigt ou à la souris la fait avancer ou reculer, avec un élan ; elle repart ensuite toute seule.
+// Mouvement réduit demandé : la bande ne tourne plus seule, mais se fait toujours glisser.
 const defile = document.querySelector('[data-defile]');
 defile.insertAdjacentHTML('beforeend', [...defile.children].map((c) => c.outerHTML.replace('class="atout"', 'class="atout" aria-hidden="true"')).join(''));
-// On fait défiler la zone elle-même plutôt que de déplacer une bande de 5 000 px :
-// sur iPhone, une bande aussi large animée perdait des morceaux (cartes blanches).
-if (!calme) {
-  const copie = defile.querySelector('[aria-hidden="true"]');
-  let pos = 0, avant = 0, touche = false;
-  defile.addEventListener('pointerdown', () => (touche = true));
-  addEventListener('pointerup', () => (touche = false));
-  defile.addEventListener('touchstart', () => (touche = true), { passive: true });
-  addEventListener('touchend', () => (touche = false));
-  requestAnimationFrame(function avancer(t) {
-    const boucle = copie.offsetLeft - defile.firstElementChild.offsetLeft;
-    if (touche || Math.abs(defile.scrollLeft - pos) > 2) pos = defile.scrollLeft; // l'utilisateur a fait glisser
-    else pos += Math.min(t - avant, 50) * 0.04; // 40 px par seconde
-    if (pos >= boucle) pos -= boucle;
-    defile.scrollLeft = pos;
-    avant = t;
-    requestAnimationFrame(avancer);
+const cartes = [...defile.children];
+const VITESSE = calme ? 0 : 0.04; // px par ms : 40 px par seconde
+let places = [], tour = 1, largeur = 0;
+const mesurer = () => {
+  places = cartes.map((c) => c.offsetLeft); // position sans le déplacement (offsetLeft ignore transform)
+  const derniere = cartes[cartes.length - 1];
+  tour = derniere.offsetLeft + derniere.offsetWidth + parseFloat(getComputedStyle(defile).columnGap) - places[0];
+  largeur = derniere.offsetWidth;
+};
+mesurer();
+addEventListener('resize', mesurer);
+let decalage = 0, elan = 0, tenu = null, avant = performance.now();
+const placer = () => {
+  cartes.forEach((c, i) => {
+    // Position voulue, de « juste sortie à gauche de l'écran » (bord droit à 0) jusqu'à loin à droite.
+    const x = ((((places[i] - decalage + largeur) % tour) + tour) % tour) - largeur;
+    c.style.transform = `translate3d(${x - places[i]}px,0,0)`;
   });
-}
+};
+defile.addEventListener('pointerdown', (e) => {
+  tenu = { x: e.clientX, decalage, t: e.timeStamp, id: e.pointerId };
+  elan = 0;
+});
+defile.addEventListener('pointermove', (e) => {
+  if (!tenu || e.pointerId !== tenu.id) return;
+  if (!defile.classList.contains('tenu') && Math.abs(e.clientX - tenu.x) > 4) {
+    defile.classList.add('tenu');
+    defile.setPointerCapture(e.pointerId);
+  }
+  const nouveau = tenu.decalage - (e.clientX - tenu.x);
+  const dt = Math.max(1, e.timeStamp - tenu.t);
+  elan = (nouveau - decalage) / dt; // vitesse du doigt, gardée pour l'élan
+  decalage = nouveau;
+  tenu.t = e.timeStamp;
+});
+const lacher = () => {
+  tenu = null;
+  defile.classList.remove('tenu');
+};
+defile.addEventListener('pointerup', lacher);
+defile.addEventListener('pointercancel', lacher);
+requestAnimationFrame(function avancer(t) {
+  const dt = Math.min(t - avant, 50);
+  avant = t;
+  if (!tenu) {
+    decalage += (VITESSE + elan) * dt;
+    elan *= Math.pow(0.995, dt); // l'élan s'éteint en une seconde environ
+    if (Math.abs(elan) < 0.005) elan = 0;
+  }
+  placer();
+  requestAnimationFrame(avancer);
+});
 
 // ---------- Discussion : les réponses arrivent une à une quand le téléphone est visible ----------
 const reponses = [
