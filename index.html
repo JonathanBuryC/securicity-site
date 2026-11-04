@@ -194,8 +194,10 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-types .type.choisi{outline:2px solid var(--bleu);background:#F1F4FC}
 
 /* ---------- Appel aux voisins ---------- */
-.temoins{position:relative;overflow:hidden;background:var(--sol)}
-.temoins .fond{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+/* Appel aux voisins et commissariat sur un seul plan : le quartier continue d’une section à l’autre. */
+.plan-long{position:relative;overflow:hidden;background:var(--sol)}
+.fond-long{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.temoins{position:relative}
 .temoins .in{position:relative;max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:48px 80px;align-items:center}
 .temoins .texte{background:rgba(246,247,249,.92);border-radius:24px;padding:32px 34px;max-width:520px}
 .pq-titre{display:inline-grid;place-items:center;background:var(--encre);color:#fff;font-size:.6em;font-weight:800;border-radius:99px;padding:0 .35em;line-height:1.3;vertical-align:.25em;margin-left:.15em;letter-spacing:0}
@@ -213,8 +215,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 .saisie{background:var(--app-surface);border:1px solid var(--app-bordure);border-radius:18px;padding:8px 12px;color:var(--app-discret)}
 
 /* ---------- Prévenir le commissariat : téléphone à gauche, texte à droite ---------- */
-.police{position:relative;background:var(--sol);overflow:hidden}
-.police .fond{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
+.police{position:relative;overflow:hidden}
 .police .texte{background:rgba(246,247,249,.92);border-radius:24px;padding:32px 34px;max-width:560px}
 .police .in{position:relative;max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px 56px;align-items:center}
 .police .texte p{color:var(--texte2);font-size:1.12rem;max-width:46ch;margin:22px 0 0}
@@ -247,7 +248,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 .scene-p.velo .t-p.velo svg{color:#fff}
 @keyframes tape{0%{box-shadow:0 0 0 0 rgba(27,63,168,.45)}100%{box-shadow:0 0 0 14px rgba(27,63,168,0)}}
 /* 3. Le détail et la case du commissariat */
-.v-env .photo{height:92px;flex:none}
+.photo-velo{display:block;width:100%;height:92px;flex:none;border-radius:10px}
 .carte-pol{background:var(--police);color:#fff;border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:7px}
 .ligne-pol{display:flex;align-items:center;gap:9px}
 .ligne-pol b{flex:1;font-size:12px;line-height:1.25}
@@ -291,7 +292,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 .bd-ligne small{color:var(--texte2);font-weight:700;font-size:11px;padding-top:1px}
 .bd-ligne span{font-weight:700}
 .bd-corps{display:flex;gap:9px;align-items:center;background:var(--fond);border-radius:8px;padding:7px}
-.bd-photo{width:44px;height:44px;border-radius:6px;flex:none;background:linear-gradient(160deg,#9BA7B8,#5D6B80 60%,#3E4A5C)}
+.bd-photo{width:44px;height:44px;border-radius:6px;flex:none}
 .bd-corps small{display:block;color:var(--texte2);font-size:10.5px;margin-top:2px}
 .bd-rep{display:flex;align-items:center;gap:6px;color:var(--bleu);font-weight:700;font-size:11.5px}
 .bd-rep svg{width:14px;height:14px}
@@ -392,6 +393,41 @@ h1 em{font-style:normal;color:var(--bleu)}
     <path stroke-width="12" d="M-20 410L1620 380M820-20L870 920M240-20L280 920M-20 120L700-20M1360-20L1460 920M600 250L640 640M-20 860L1620 880M960 380L1500 330"/>
   </g>
 </g>
+<g id="quartier-suite">
+  <rect width="1600" height="900" fill="var(--sol)"/>
+  <rect x="1010" y="385" width="270" height="235" rx="18" fill="var(--parc)"/>
+  <rect x="130" y="420" width="140" height="150" rx="14" fill="var(--parc)"/>
+  <rect x="362" y="195" width="330" height="128" rx="16" fill="var(--parc)"/>
+  <path d="M362 300C440 250 560 300 692 220" stroke="var(--rue)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".8"/>
+  <g fill="#C2D8BC"><circle cx="400" cy="235" r="18"/><circle cx="450" cy="222" r="13"/><circle cx="520" cy="250" r="20"/><circle cx="600" cy="300" r="15"/><circle cx="650" cy="255" r="19"/><circle cx="420" cy="300" r="12"/></g>
+  <rect x="560" y="740" width="200" height="120" rx="14" fill="var(--parc)"/>
+  <path d="M1010 600C1080 540 1150 520 1280 420" stroke="var(--rue)" stroke-width="6" fill="none" stroke-linecap="round" opacity=".8"/>
+  <g fill="#C2D8BC"><circle cx="1060" cy="440" r="22"/><circle cx="1110" cy="470" r="16"/><circle cx="1200" cy="430" r="20"/><circle cx="1240" cy="560" r="22"/><circle cx="1080" cy="580" r="18"/><circle cx="1160" cy="600" r="14"/><circle cx="1250" cy="480" r="12"/><circle cx="160" cy="450" r="18"/><circle cx="230" cy="520" r="20"/><circle cx="170" cy="545" r="14"/><circle cx="245" cy="440" r="12"/></g>
+  <g stroke="var(--rue)" fill="none" stroke-linecap="round">
+    <path stroke-width="26" d="M1046-20L916 920M345-20L235 920M-20 360L1620 300"/>
+    <path stroke-width="12" d="M732-20L682 920M1322-20L1282 920M144-20L44 920M-20 640L1620 700M-20 150L1620 175M760 240L1620 230"/>
+  </g>
+</g>
+<symbol id="velo-vole" viewBox="0 0 240 100" preserveAspectRatio="xMidYMid slice">
+  <rect width="240" height="100" fill="#AEB8C7"/>
+  <g fill="#A1ACBD"><rect y="14" width="240" height="2"/><rect y="34" width="240" height="2"/><rect y="54" width="240" height="2"/></g>
+  <rect y="74" width="240" height="26" fill="#7D899C"/><rect y="74" width="240" height="3" fill="#6B778A"/>
+  <path d="M74 94V52a24 24 0 0 1 48 0v42" fill="none" stroke="#3A4558" stroke-width="6" stroke-linecap="round"/>
+  <g fill="none" stroke="#1F2836" stroke-linecap="round">
+    <circle cx="136" cy="70" r="22" stroke-width="5"/>
+    <circle cx="136" cy="70" r="16" stroke="#56627A" stroke-width="1.5"/>
+    <path d="M136 50v40M116 70h40M122 56l28 28M150 56l-28 28" stroke="#56627A" stroke-width="1.2"/>
+    <path d="M136 70l9-30" stroke-width="4"/><path d="M141 38l9 3" stroke-width="4"/>
+  </g>
+  <circle cx="136" cy="70" r="3.5" fill="#1F2836"/>
+  <g fill="none" stroke="#E3A72F" stroke-width="3">
+    <ellipse cx="121" cy="66" rx="5" ry="3" transform="rotate(20 121 66)"/>
+    <ellipse cx="128" cy="69" rx="5" ry="3" transform="rotate(-20 128 69)"/>
+    <ellipse cx="170" cy="92" rx="5" ry="3" transform="rotate(10 170 92)"/>
+    <ellipse cx="179" cy="94" rx="5" ry="3" transform="rotate(-15 179 94)"/>
+    <ellipse cx="188" cy="92" rx="5" ry="3" transform="rotate(25 188 92)"/>
+  </g>
+</symbol>
 </defs></svg>
 
 <section class="accueil">
@@ -430,8 +466,9 @@ h1 em{font-style:normal;color:var(--bleu)}
   </div>
 </section>
 
+<div class="plan-long">
+<svg class="fond-long" viewBox="0 0 1600 1800" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#quartier" transform="translate(1600 0) scale(-1 1)"/><use href="#quartier-suite" y="900"/></svg>
 <section class="temoins">
-  <svg class="fond" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><use href="#quartier" transform="translate(1600 0) scale(-1 1)"/></svg>
   <div class="in">
     <div class="texte">
       <h2>Lancez un appel aux voisins<span class="pq-titre">!?</span></h2>
@@ -449,7 +486,6 @@ h1 em{font-style:normal;color:var(--bleu)}
 </section>
 
 <section class="police" aria-labelledby="titre-police">
-  <svg class="fond" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMin slice" aria-hidden="true"><use href="#quartier" transform="translate(1600 900) scale(-1 -1)"/></svg>
   <div class="in">
     <div class="scene-p" data-police>
       <div class="coque"><div class="vitre" aria-hidden="true">
@@ -469,7 +505,7 @@ h1 em{font-style:normal;color:var(--bleu)}
           </div>
         </div></div>
         <div class="vue-p v-env"><div class="page">
-          <div class="photo"></div>
+          <svg class="photo-velo" aria-hidden="true"><use href="#velo-vole"/></svg>
           <div class="titre"><span class="icone"><i data-lucide="bike"></i></span><div><b style="font-size:14px">Vol de vélo</b><br><small style="color:var(--app-discret)">14 rue des Martyrs, Paris 9e</small></div></div>
           <div class="question">Antivol coupé devant le 14, vers 18 h.</div>
           <div class="carte-pol">
@@ -487,7 +523,7 @@ h1 em{font-style:normal;color:var(--bleu)}
         <div class="bd-tete"><span class="bd-ico"><i data-lucide="mail"></i></span>E-mail au commissariat</div>
         <div class="bd-ligne"><small>À</small><span>Commissariat de police, Paris 9e</span></div>
         <div class="bd-ligne"><small>Objet</small><span>Vol de vélo, 14 rue des Martyrs</span></div>
-        <div class="bd-corps"><span class="bd-photo"></span><span>« Antivol coupé devant le 14, vers 18 h. »<small>Aujourd’hui à 18 h 03 · photo jointe</small></span></div>
+        <div class="bd-corps"><svg class="bd-photo" aria-hidden="true"><use href="#velo-vole"/></svg><span>« Antivol coupé devant le 14, vers 18 h. »<small>Aujourd’hui à 18 h 03 · photo jointe</small></span></div>
         <div class="bd-rep"><i data-lucide="reply"></i>Il vous répond sur votre e-mail</div>
       </div>
     </div>
@@ -502,6 +538,7 @@ h1 em{font-style:normal;color:var(--bleu)}
     </div>
   </div>
 </section>
+</div>
 
 <section class="final">
   <div>
