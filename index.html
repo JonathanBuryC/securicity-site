@@ -14,7 +14,7 @@
 <style>
 /* Accueil épuré : la carte, le téléphone, le titre. Le reste se découvre en descendant :
    les alertes qui tombent une à une sous le titre, le carrousel des fonctions, l’appel aux voisins et sa discussion,
-   puis le commissariat prévenu (le signalement se fait dans le téléphone, l’e-mail en sort dans une bulle). */
+   puis la mairie prévenue (le signalement se fait dans le téléphone, l’e-mail en sort dans une bulle). */
 :root{
   --bleu:#1B3FA8; --encre:#14233B; --texte2:#3B4960; --rouge:#E0452F; --police:#0B2A6F;
   --fond:#F6F7F9; --blanc:#FFFFFF; --filet:#D5DBE4;
@@ -195,7 +195,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 .v-types .type.choisi{outline:2px solid var(--bleu);background:#F1F4FC}
 
 /* ---------- Appel aux voisins ---------- */
-/* Appel aux voisins et commissariat sur un seul plan : le quartier continue d’une section à l’autre. */
+/* Appel aux voisins et mairie sur un seul plan : le quartier continue d’une section à l’autre. */
 .plan-long{position:relative;overflow:hidden;background:var(--sol)}
 .fond-long{position:absolute;inset:0;width:100%;height:100%;opacity:.7}
 .temoins{position:relative}
@@ -215,7 +215,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 [data-discussion] .vitre{font:500 11px/1.35 "Public Sans",sans-serif;color:var(--app-texte);text-align:left}
 .saisie{background:var(--app-surface);border:1px solid var(--app-bordure);border-radius:18px;padding:8px 12px;color:var(--app-discret)}
 
-/* ---------- Prévenir le commissariat : téléphone à gauche, texte à droite ---------- */
+/* ---------- Prévenir la mairie : téléphone à gauche, texte à droite ---------- */
 .police{position:relative;overflow:hidden}
 .police .texte{background:rgba(246,247,249,.92);border-radius:24px;padding:32px 34px;max-width:560px}
 .police .in{position:relative;max-width:1180px;margin:0 auto;padding:104px 24px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:48px 56px;align-items:center}
@@ -243,7 +243,7 @@ h1 em{font-style:normal;color:var(--bleu)}
 .scene-p.velo .t-p.velo{background:var(--bleu);border-color:var(--bleu);color:#fff;animation:tape .6s}
 .scene-p.velo .t-p.velo svg{color:#fff}
 @keyframes tape{0%{box-shadow:0 0 0 0 rgba(27,63,168,.45)}100%{box-shadow:0 0 0 14px rgba(27,63,168,0)}}
-/* 3. Le détail et la case du commissariat */
+/* 3. Le détail et la case de la mairie */
 .photo-velo{display:block;width:100%;height:92px;flex:none;border-radius:10px}
 .carte-pol{background:var(--police);color:#fff;border-radius:12px;padding:11px 12px;display:flex;flex-direction:column;gap:7px}
 .ligne-pol{display:flex;align-items:center;gap:9px}
@@ -352,7 +352,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   .v-types{padding:14px}.v-types .type{font-size:11px;padding:4px 9px 4px 4px;gap:5px}.v-types .type span{width:20px;height:20px}
   .raccourcis span{font-size:11px;padding:5px 9px}  .telecharger{flex-direction:column;align-items:flex-start}
   .temoins .texte,.police .texte{padding:24px}
-  /* Petit écran : la bulle passe sous la case du commissariat, la pointe vers le haut. */
+  /* Petit écran : la bulle passe sous la case de la mairie, la pointe vers le haut. */
   .scene-p{padding-right:0;padding-bottom:130px}
   .bulle-bd{left:40px;top:326px;width:210px;padding:11px 11px 10px;font-size:11px;gap:6px;transform-origin:163px -20px}
   .bulle-bd::before{left:150px;top:-22px;border-width:0 13px 19px;border-color:transparent transparent var(--encre)}
@@ -454,7 +454,7 @@ h1 em{font-style:normal;color:var(--bleu)}
   <div class="defile" data-defile>
     <div class="atout"><div class="visuel v-carte"><svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><use href="#plan"/></svg><div class="rayon"></div><div class="maison"><i data-lucide="map-pin-house"></i></div><div class="pin" style="left:24%;top:28%"></div><div class="pin" style="left:68%;top:36%"></div><div class="pin" style="left:40%;top:62%"></div><div class="pin" style="left:76%;top:70%"></div></div><h3>La carte de votre quartier</h3></div>
     <div class="atout"><div class="visuel v-verrou"><div class="heure"><small>jeudi 30 octobre</small><b class="tab">22:08</b></div><div class="banniere"><span class="app"><i></i></span><small><span>SECURICITY</span><span>maintenant</span></small><b>Agression à 250 m de chez vous</b><span class="texte-b">Boulevard de Clichy. Touchez pour voir.</span></div></div><h3>L'alerte, même téléphone verrouillé</h3></div>
-    <div class="atout"><div class="visuel v-transmission"><div class="carte-p"><div class="ligne-p"><span class="ico-p"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir la police municipale de votre commune</b><span class="inter-p"></span></div><small>Envoyé par e-mail 30 minutes après la publication. <u>Voir le message</u></small></div></div><h3>La mairie ou la police prévenue en un geste</h3></div>
+    <div class="atout"><div class="visuel v-transmission"><div class="carte-p"><div class="ligne-p"><span class="ico-p"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir la mairie de votre commune</b><span class="inter-p"></span></div><small>Envoyé par e-mail 30 minutes après la publication. <u>Voir le message</u></small></div></div><h3>La mairie prévenue en un geste</h3></div>
     <div class="atout"><div class="visuel v-photo"><img src="/images/pillage-vitrine.jpg" alt="Des jeunes encapuchonnés brisent la vitrine d'un magasin, la nuit" loading="lazy" width="680" height="800"><small class="credit">© Emma Da Silva/AP/SIPA</small><span class="puce"><i data-lucide="camera"></i>Photo jointe au signalement</span></div><h3>Photographiez ce que vous voyez</h3></div>
     <div class="atout"><div class="visuel v-chat"><div class="fenetre"><div class="barre"><span class="mini-pin"></span><div><b>Cambriolage rue des Martyrs</b><br><small>!? Appel aux voisins</small></div></div><div class="echanges"><div class="ligne-msg moi"><div class="b">Porte forcée vers 14 h au n° 14. Quelqu'un a vu quelque chose ?</div></div><div class="ligne-msg"><span class="avatar" style="background:#2E9E5B">V</span><div class="b">Un scooter noir était garé devant vers 13 h 50.</div></div><div class="ligne-msg"><span class="avatar" style="background:#C2611A">M</span><div class="b">Je l'ai vu aussi, il est parti vers Pigalle.</div></div></div><div class="envoi">Répondre…<span><i data-lucide="send"></i></span></div></div></div><h3>Vos voisins vous répondent</h3></div>
     <div class="atout"><div class="visuel v-adresses"><svg class="france" viewBox="0 0 220 220" aria-hidden="true"><path d="M112 14L132 26L150 30L176 46L196 58L190 82L182 98L188 112L182 128L194 146L190 160L170 168L150 178L128 180L112 190L100 204L78 198L56 192L50 176L58 150L54 128L44 108L30 96L10 84L18 72L42 74L56 62L62 46L82 40L98 30Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><path d="M204 176L210 186L208 204L200 210L196 194Z" fill="#FFFFFF" stroke="#C6D2E5" stroke-width="3" stroke-linejoin="round"/><circle cx="104" cy="64" r="20" fill="rgba(27,63,168,.14)" stroke="#1B3FA8" stroke-width="2"/><circle cx="146" cy="164" r="20" fill="rgba(27,63,168,.08)" stroke="#1B3FA8" stroke-width="2" stroke-dasharray="4 3"/><g fill="#FFFFFF" stroke="#1B3FA8" stroke-width="2.4"><circle cx="104" cy="64" r="11"/><circle cx="146" cy="164" r="11"/></g><path d="M98 66.5L104 61.5L110 66.5V70H98Z" fill="#1B3FA8"/><path d="M142 158H150V170L146 167L142 170Z" fill="#1B3FA8"/><g font-family="Public Sans,system-ui,sans-serif" font-weight="700" font-size="11" fill="#14233B" text-anchor="middle"><text x="104" y="98">Paris</text><text x="146" y="198">Marseille</text></g></svg><div class="raccourcis"><span class="on"><i data-lucide="map-pin-house"></i>Chez moi</span><span><i data-lucide="bookmark"></i>Parents</span></div></div><h3>Toutes vos adresses, d'un geste</h3></div>
@@ -489,7 +489,7 @@ h1 em{font-style:normal;color:var(--bleu)}
           <svg class="carte" viewBox="0 0 260 560" preserveAspectRatio="xMidYMid slice"><use href="#plan"/></svg>
           <div class="haut"><div class="bulle">Touchez la carte à l’endroit de l’incivilité</div></div>
           <div class="ombre ombre-p"></div><div class="pin gros pin-p"></div>
-          <div class="bas"><div class="carton adr-p"><small>Position du signalement</small><b>14 rue de Charenton, Paris 12e</b></div></div>
+          <div class="bas"><div class="carton adr-p"><small>Position du signalement</small><b>14 cours Gambetta, Lyon 3e</b></div></div>
         </div>
         <div class="vue-p v-type"><div class="page">
           <h4>Que s’est-il passé ?</h4>
@@ -502,30 +502,30 @@ h1 em{font-style:normal;color:var(--bleu)}
         </div></div>
         <div class="vue-p v-env"><div class="page">
           <svg class="photo-velo" aria-hidden="true"><use href="#velo-vole"/></svg>
-          <div class="titre"><span class="icone"><i data-lucide="bike"></i></span><div><b style="font-size:14px">Vol de vélo</b><br><small style="color:var(--app-discret)">14 rue de Charenton, Paris 12e</small></div></div>
+          <div class="titre"><span class="icone"><i data-lucide="bike"></i></span><div><b style="font-size:14px">Vol de vélo</b><br><small style="color:var(--app-discret)">14 cours Gambetta, Lyon 3e</small></div></div>
           <div class="question">Antivol coupé devant le 14, vers 18 h.</div>
           <div class="carte-pol">
-            <div class="ligne-pol"><span class="ico-pol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir le commissariat de police du 12e</b><span class="inter-pol"></span></div>
-            <small class="etat-pol"><span class="avant">Il recevra votre signalement par e-mail.</span><span class="apres">✓ E-mail prêt pour le commissariat</span></small>
+            <div class="ligne-pol"><span class="ico-pol"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></span><b>Prévenir la mairie de Lyon 3e arrondissement</b><span class="inter-pol"></span></div>
+            <small class="etat-pol"><span class="avant">Il recevra votre signalement par e-mail.</span><span class="apres">✓ E-mail prêt pour la mairie</span></small>
           </div>
           <div class="bouton publier">Publier le signalement</div>
         </div></div>
         <div class="vue-p v-fin"><div class="fin-p">
           <svg class="coche" viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg>
-          <b>Signalement publié</b><span>Le commissariat du 12e va recevoir votre e-mail.</span>
+          <b>Signalement publié</b><span>La mairie du 3e va recevoir votre e-mail.</span>
         </div></div>
       </div></div>
-      <div class="bulle-bd" role="img" aria-label="Aperçu de l’e-mail envoyé au commissariat de police du 12e : vol de vélo, 14 rue de Charenton, avec la description et la photo ; le commissariat répond directement à l’habitant.">
-        <div class="bd-tete"><span class="bd-ico"><i data-lucide="mail"></i></span>E-mail au commissariat</div>
-        <div class="bd-ligne"><small>À</small><span>Commissariat de police, Paris 12e</span></div>
-        <div class="bd-ligne"><small>Objet</small><span>Vol de vélo, 14 rue de Charenton</span></div>
+      <div class="bulle-bd" role="img" aria-label="Aperçu de l’e-mail envoyé à la mairie du 3e arrondissement de Lyon : vol de vélo, 14 cours Gambetta, avec la description et la photo ; la mairie répond directement à l’habitant.">
+        <div class="bd-tete"><span class="bd-ico"><i data-lucide="mail"></i></span>E-mail à la mairie</div>
+        <div class="bd-ligne"><small>À</small><span>Mairie du 3e arrondissement, Lyon</span></div>
+        <div class="bd-ligne"><small>Objet</small><span>Vol de vélo, 14 cours Gambetta</span></div>
         <div class="bd-corps"><svg class="bd-photo" aria-hidden="true"><use href="#velo-vole"/></svg><span>« Antivol coupé devant le 14, vers 18 h. »<small>Aujourd’hui à 18 h 03 · photo jointe</small></span></div>
         <div class="bd-rep"><i data-lucide="reply"></i>Il vous répond sur votre e-mail</div>
       </div>
     </div>
     <div class="texte">
-      <h2 id="titre-police">Le commissariat prévenu, en&nbsp;un&nbsp;geste.</h2>
-      <p>En signalant, activez « Prévenir » : Securicity écrit l’e‑mail pour vous et l’envoie au bon service, avec le lieu, l’heure et la photo. Le commissariat ou la mairie peut vous répondre directement. Gratuit.</p>
+      <h2 id="titre-police">La mairie prévenue, en&nbsp;un&nbsp;geste.</h2>
+      <p>En signalant, activez « Prévenir » : Securicity écrit l’e‑mail pour vous et l’envoie à la mairie du lieu, avec l’heure et la photo. La mairie peut vous répondre directement. Gratuit.</p>
     </div>
   </div>
 </section>
@@ -726,7 +726,7 @@ else new IntersectionObserver((entrees) => {
   if (visible && !enCours) raconter();
 }, { threshold: 0.6 }).observe(document.querySelector('[data-discussion]'));
 
-// ---------- Prévenir le commissariat : le signalement se fait, l'e-mail sort du téléphone puis y rentre ----------
+// ---------- Prévenir la mairie : le signalement se fait, l'e-mail sort du téléphone puis y rentre ----------
 const scene = document.querySelector('[data-police]');
 // [attente avant l'étape (ms), classes ajoutées] : repère posé, type choisi, case activée, bulle, retour, publication.
 const ETAPES = [[600, 'pose'], [1600, 'type'], [1000, 'velo'], [1000, 'env'], [1200, 'active'], [300, 'sort'], [3600, 'rentre pret'], [1100, 'publie'], [500, 'fin']];
